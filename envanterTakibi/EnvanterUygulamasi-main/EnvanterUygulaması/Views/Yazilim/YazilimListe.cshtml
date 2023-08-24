@@ -1,0 +1,49 @@
+﻿@model EnvanterUygulaması.Models.YazilimViewModel
+
+@{
+    ViewData["Title"] = "Yazılım Listesi";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="mt-5">
+    <h3 class="text-center">Donanım Listesi</h3>
+    <div class="input-group mt-3 mb-3">
+        <input type="text" class="form-control" placeholder="Arama" aria-label="search" aria-describedby="basic-addon1">
+    </div>
+    <button class="btn btn-primary float-right btn-turuncu">Detaylı Arama</button>
+</div>
+<div class="mt-5 table-responsive">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Markası</th>
+                <th>Üst Modeli</th>
+                <th>Alt Modeli</th>
+                <th>MAC Adresi</th>
+                <th>Seri No</th>
+                <th>Durumu</th>
+                <th>Garanti Süresi</th>
+                <th>Alım Tarihi</th>
+                <th>Adet</th>
+                <th>Poe</th>
+                <th>Açıklama</th>
+                <th>Birim</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var yazilim in Model.yazilimlars)
+            {
+                <tr>
+                    <td>@yazilim.YazilimMarka</td>
+                    <td>@yazilim.Adi</td>
+                    <td>@yazilim.Versiyon</td>
+                    <td>@yazilim.Turu</td>
+                    <td>@yazilim.CihazSayisi</td>
+                    <td>@yazilim.AlimTarihi</td>
+                    <td>@yazilim.DestekSuresi</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
