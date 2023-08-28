@@ -1,0 +1,97 @@
+﻿.altbaslik {
+    margin-left: 30px; /* Açılır başlıkların ana başlıklardan önceki boşluğunu ayarla */
+}
+
+.grupbaslik {
+    margin-left: 10px;
+}
+
+.custom-sidebar {
+    background-color: rgb(53, 53, 65); /* İstediğiniz arka plan rengini burada belirtin */
+}
+
+.baslik {
+    color: white;
+}
+/*.btn-group {
+    display: inline-flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+*/
+.rounded-button {
+    border: none;
+    padding: 10px 20px;
+    margin: 5px;
+    border-radius: 10px; /* Buradaki değeri istediğiniz gibi ayarlayabilirsiniz */
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.seffaf-baslik {
+    color: rgb(144, 144, 146);
+}
+
+.dropdown-menu {
+    background-color: rgb(33, 37, 41); 
+    color: white;
+}
+
+.dropdown-item {
+    color: #ffffff;
+}
+
+.dark-navbar {
+    background-color: rgb(18, 20, 23);
+}
+
+.nav-link:hover, .nav-link:focus {
+    color: #ff9900;
+}
+
+.btn-turuncu {
+    background-color: #ff9900;
+    
+}
+
+.btn-turuncu:hover, .btn-turuncu:focus {
+    background-color: #cc7a00;
+}
+
+.dropdown-item:hover, .dropdown-item:focus {
+    background-color: #ff9900;
+}
+#btnClear {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.button-container{
+    display:flex;
+}
+.col-md-3 {
+    display: flex;
+    align-items: center;
+}
+
+    .col-md-3 select, .col-md-3 label {
+        margin-right: 10px;
+    }
+
+        .col-md-3 select.custom-select {
+            width: 150px; /* Dilediğiniz genişliği burada belirleyebilirsiniz */
+            margin-right: 10px;
+        }
+
+.custom-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60vh;
+}
+
+.red-class {
+    color: red;
+    align-content: end;
+}
+

@@ -1,0 +1,55 @@
+﻿@model List<EnvanterUygulaması.ViewModels.DonanimWM>
+
+<div class="mt-5">
+    <h3 class="text-center">Donanım Listesi</h3>
+        <div class="input-group mt-3 mb-3">
+            <input type="text" class="form-control" placeholder="Arama" aria-label="search" aria-describedby="basic-addon1">
+          </div>
+        <button class="btn btn-primary float-end">Detaylı Arama</button>
+      </div>
+      <br />
+<div class="mt-5 table-responsive">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Türü</th>
+              <th>AltTürü</th>
+              <th>Markası</th>
+              <th>Üst Modeli</th>
+              <th>Alt Modeli</th>
+              <th>MAC Adresi</th>
+              <th>Seri No</th>
+              <th>Durumu</th>
+              <th>Garanti Süresi</th>
+              <th>Alım Tarihi</th>
+              <th>Adet</th>
+              <th>Poe</th>
+              <th>Ekleyen Kullanıcı</th>
+              <th>Açıklama</th>
+              <th>Birim</th>
+            </tr>
+          </thead>
+          <tbody>
+           @foreach (var item in Model)
+            {
+                <tr>
+                   <td>@item.Turu</td>
+                   <td>@item.AltTuru</td>
+                   <td>@item.Markasi</td>
+                   <td>@item.UstModeli</td>
+                   <td>@item.AltModeli</td>
+                   <td>@item.MacAdresi</td>
+                   <td>@item.SeriNo</td>
+                   <td>@item.Durumu</td>
+                   <td>@item.GarantiSuresi</td>
+                   <td>@item.AlimTarihi</td>
+                   <td>@item.Adedi</td>
+                   <td>@item.Poe</td>
+                   <td>@item.EkleyenKullanici</td>
+                   <td>@item.Aciklama</td>
+                   <td>@item.Birimi</td>
+                </tr>
+            }
+        </tbody>
+        </table>
+      </div>

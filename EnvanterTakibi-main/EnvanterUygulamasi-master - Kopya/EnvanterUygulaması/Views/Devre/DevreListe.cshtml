@@ -1,0 +1,49 @@
+﻿@model List<EnvanterUygulaması.ViewModels.DevreWM>
+
+<div class="mt-5">
+    <h3 class="text-center">Yazılım Listesi</h3>
+        <div class="input-group mt-3 mb-3">
+            <input type="text" class="form-control" placeholder="Arama" aria-label="search" aria-describedby="basic-addon1">
+          </div>
+        <button class="btn btn-primary float-end">Detaylı Arama</button>
+      </div>
+      <br />
+<div class="mt-5 table-responsive">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Adı</th>
+              <th>No</th>
+              <th>Bölge</th>
+              <th>Bulut ID</th>
+              <th>Bulut Adı</th>
+              <th>Ana Devre No</th>
+              <th>İp Bloğu</th>
+              <th>Durum</th>
+              <th>Koordinat</th>
+              <th>Açıklama</th>
+              <th>Mahsup</th>
+              <th>Ekleyen Kullanıcı</th>
+            </tr>
+          </thead>
+          <tbody>
+           @foreach (var item in Model)
+            {
+                <tr>
+                   <td>@item.Adi</td>
+                   <td>@item.Nosu</td>
+                   <td>@item.Bolge</td>
+                   <td>@item.BulutID</td>
+                   <td>@item.BulutAdi</td>
+                   <td>@item.AnaDevreNo</td>
+                   <td>@item.IpBlogu</td>
+                   <td>@item.Durumu</td>
+                   <td>@item.Koordinati</td>
+                   <td>@item.Aciklama</td>
+                   <td>@item.Mahsup</td>
+                   <td>@item.EkleyenKullanici</td>
+                </tr>
+            }
+        </tbody>
+        </table>
+      </div>
