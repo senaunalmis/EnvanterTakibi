@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "nHxdPyZQxZZ+mj/SA2wkThLT4QFo1YkcJgvZn8J2Bb4=",
+  "Hash": "62sR+8rfKNsnrL56bL5Wte2tf/DhGamhZrjNXcPG80c=",
   "Source": "EnvanterUygulaması",
   "BasePath": "_content/EnvanterUygulaması",
   "Mode": "Default",
@@ -49,23 +49,6 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "C:\\Users\\unalmis.sena\\Downloads\\EnvanterTakibi-main\\EnvanterUygulamasi-master - Kopya\\EnvanterUygulaması\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\EnvanterUygulaması.bundle.scp.css"
-    },
-    {
-      "Identity": "C:\\Users\\unalmis.sena\\Downloads\\EnvanterTakibi-main\\EnvanterUygulamasi-master - Kopya\\EnvanterUygulaması\\wwwroot\\css\\donanim.css",
-      "SourceId": "EnvanterUygulaması",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\unalmis.sena\\Downloads\\EnvanterTakibi-main\\EnvanterUygulamasi-master - Kopya\\EnvanterUygulaması\\wwwroot\\",
-      "BasePath": "_content/EnvanterUygulaması",
-      "RelativePath": "css/donanim.css",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\css\\donanim.css"
     },
     {
       "Identity": "C:\\Users\\unalmis.sena\\Downloads\\EnvanterTakibi-main\\EnvanterUygulamasi-master - Kopya\\EnvanterUygulaması\\wwwroot\\css\\site.css",
