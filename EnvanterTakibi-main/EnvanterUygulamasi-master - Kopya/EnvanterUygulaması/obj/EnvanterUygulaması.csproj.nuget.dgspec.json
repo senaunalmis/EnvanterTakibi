@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\unalmis.sena\\Downloads\\EnvanterTakibi-main\\EnvanterUygulamasi-master - Kopya\\EnvanterUygulaması\\EnvanterUygulaması.csproj": {}
+    "C:\\Users\\unalmis.sena\\Desktop\\EnavanterGithub\\EnvanterTakibi\\EnvanterTakibi-main\\EnvanterUygulamasi-master - Kopya\\EnvanterUygulaması\\EnvanterUygulaması.csproj": {}
   },
   "projects": {
-    "C:\\Users\\unalmis.sena\\Downloads\\EnvanterTakibi-main\\EnvanterUygulamasi-master - Kopya\\EnvanterUygulaması\\EnvanterUygulaması.csproj": {
+    "C:\\Users\\unalmis.sena\\Desktop\\EnavanterGithub\\EnvanterTakibi\\EnvanterTakibi-main\\EnvanterUygulamasi-master - Kopya\\EnvanterUygulaması\\EnvanterUygulaması.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\unalmis.sena\\Downloads\\EnvanterTakibi-main\\EnvanterUygulamasi-master - Kopya\\EnvanterUygulaması\\EnvanterUygulaması.csproj",
+        "projectUniqueName": "C:\\Users\\unalmis.sena\\Desktop\\EnavanterGithub\\EnvanterTakibi\\EnvanterTakibi-main\\EnvanterUygulamasi-master - Kopya\\EnvanterUygulaması\\EnvanterUygulaması.csproj",
         "projectName": "EnvanterUygulaması",
-        "projectPath": "C:\\Users\\unalmis.sena\\Downloads\\EnvanterTakibi-main\\EnvanterUygulamasi-master - Kopya\\EnvanterUygulaması\\EnvanterUygulaması.csproj",
+        "projectPath": "C:\\Users\\unalmis.sena\\Desktop\\EnavanterGithub\\EnvanterTakibi\\EnvanterTakibi-main\\EnvanterUygulamasi-master - Kopya\\EnvanterUygulaması\\EnvanterUygulaması.csproj",
         "packagesPath": "C:\\Users\\unalmis.sena\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\unalmis.sena\\Downloads\\EnvanterTakibi-main\\EnvanterUygulamasi-master - Kopya\\EnvanterUygulaması\\obj\\",
+        "outputPath": "C:\\Users\\unalmis.sena\\Desktop\\EnavanterGithub\\EnvanterTakibi\\EnvanterTakibi-main\\EnvanterUygulamasi-master - Kopya\\EnvanterUygulaması\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "sbwI36R7su9ytFAHgKeRV+3lAr8OL4i53ofXrDf1BZ9b8szgVpkC13E9jRJWMpVaRh+kG881xYuV2PPdkHTmRQ==",
+  "dgSpecHash": "40JIokoEBtWuGObTUqDcyH/tnFvDhyHlDNbivcCtjMkSQYY4dPWPUrbjBnhc+CUmkh0VZL8LcW6XTs+CJW/iow==",
   "success": true,
-  "projectFilePath": "C:\\Users\\unalmis.sena\\Downloads\\EnvanterTakibi-main\\EnvanterUygulamasi-master - Kopya\\EnvanterUygulaması\\EnvanterUygulaması.csproj",
+  "projectFilePath": "C:\\Users\\unalmis.sena\\Desktop\\EnavanterGithub\\EnvanterTakibi\\EnvanterTakibi-main\\EnvanterUygulamasi-master - Kopya\\EnvanterUygulaması\\EnvanterUygulaması.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\unalmis.sena\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\unalmis.sena\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",
