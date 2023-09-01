@@ -1,0 +1,81 @@
+﻿@model EnvanterUygulaması.ViewModels.DevreEkleDüzenleVM;
+<div class="custom-container mt-5">
+    <form asp-controller="devre" asp-action="DevreEkle"method="post">
+
+        <div class="row mt-3">
+            <div class="col-md-4">
+                <label asp-for="Adi">Devre Adı:</label>
+                <input asp-for="Adi" type="text" class="form-control">
+            </div>
+            <div class="col-md-4">
+                <label asp-for="Bolge" for="bolgeSelect">Bölge:</label>
+                <select id="bolgeSelect" class="form-select custom-select" aria-label="Default select example">
+                    <option value="1">Option 1</option>
+                    <option value="2">Option 2</option>
+                    <option value="3">Option 3</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label asp-for="DevreNo">Devre No:</label>
+                <input asp-for="DevreNo" type="text" class="form-control">
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-md-4">
+                <label asp-for="BulutAdi" for="bulutAdiSelect">Bulut Adı:</label>
+                @Html.DropDownListFor(model=> model.BulutAdi, new SelectList(Model.BulutList,"id","Adi"),"Bulut Adı Seçiniz",
+                new { @class= "form-select", @id="BulutDD",name="BulutAdiId"})
+            </div>
+            <div class="col-md-4">
+                <label asp-for="BulutId">Bulut Id:</label>
+                <input asp-for="BulutId" type="text" class="form-control" readonly>
+            </div>
+            <div class="col-md-4">
+                <label asp-for="AnaDevreNo">Ana Devre No:</label>
+                <input asp-for="AnaDevreNo" type="text" class="form-control" readonly>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-md-4">
+                <label asp-for="IpBlogu">Ip Bloğu:</label>
+                <input asp-for="IpBlogu"  type="text" class="form-control">
+            </div>
+
+            <div class="col-md-4">
+                <label asp-for="Durum" for="DurumSelect">Durumu:</label>
+                <select id="DurumSelect" class="form-select custom-select" aria-label="Default select example">
+                    <option value="Aktif">Aktif</option>
+                    <option value="Pasif">Pasif</option>
+                </select>
+            </div>
+            
+            <div class="col-md-2">
+                <label asp-for="Mahsup" class="form-check-label">Mahsup:</label>
+                <div class="form-check form-switch">
+                    <input asp-for="Mahsup" class="form-check-input" type="checkbox" role="switch">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <label asp-for="Koordinat">Koordinat:</label>
+            <input asp-for="Koordinat" type="text" class="form-control">
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-md-12">
+                <label asp-for="Aciklama">Açıklama:</label>
+                <textarea asp-for="Aciklama" class="form-control" aria-label="With textarea"></textarea>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-md-12 d-flex justify-content-between">
+                <button type="button" class="btn btn-danger">Vazgeç</button>
+                <button type="button" class="btn btn-primary">Kaydet</button>
+            </div>
+        </div>
+    </form>
+</div>
+

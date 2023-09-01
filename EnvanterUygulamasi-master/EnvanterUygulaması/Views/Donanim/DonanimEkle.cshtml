@@ -1,0 +1,174 @@
+﻿@model EnvanterUygulaması.ViewModels.DonanimEkleDuzenleVM;
+
+@if (TempData["HataMesaji"] != null)
+{
+    <div class="alert alert-danger">@TempData["HataMesaji"]</div>
+}
+
+
+<div class="custom-container mt-5">
+    <form asp-controller="Donanim" asp-action="DonanimEkle" method="post">
+        <div class="row mt-3">
+            <div class="col-md-4">
+
+                <label asp-for="TurId">Türü:</label>
+                @Html.DropDownListFor(model => model.TurId, new SelectList(Model.TurList, "id", "Adi"),"Türü seçiniz",
+                new { @class = "form-select", @id="turDD", name="TurId"})
+
+                <label asp-for="UstModelId">Üst Model:</label>
+                @Html.DropDownListFor(model => model.UstModelId, new SelectList(Model.UstModelList, "id", "Adi"),"Üst Model seçiniz",
+                new { @class = "form-select", @id="ustModelDD",name="UstModelId"})
+
+
+            </div>
+            <div class="col-md-4">
+
+                <label asp-for="AltTurId">Alt Türü:</label>
+                @Html.DropDownListFor(model => model.AltTurId, new SelectList(Model.AltTurList, "id", "Adi"),"Alt Türü seçiniz",
+                new { @class = "form-select", @id="altTurDD", name="AltTurId"})
+                <label asp-for="AltModelId">Alt Model:</label>
+                @Html.DropDownListFor(model => model.AltModelId, new SelectList(Model.AltModelList, "id", "Adi"),"Alt Model seçiniz",
+                new { @class = "form-select", @id="altModelDD", name="AltModelId"})
+
+            </div>
+            <div class="col-md-4">
+
+                <label asp-for="MarkaId">Marka:</label>
+                @Html.DropDownListFor(model => model.MarkaId, new SelectList(Model.MarkaList, "id", "Adi"),"Marka seçiniz",
+                new { @class = "form-select", @id="markaDD" ,name="MarkaId"})
+                <label asp-for="Birim">Birimi:</label>
+                <select asp-for="Birim" class="form-select custom-select" aria-label="Default select example">
+                    <option value="deneme1">denemebolge1</option>
+                    <option value="deneme2">denemebolge2</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <label asp-for="BaglantiHizi">Bağlantı Hızı:</label>
+                <input type="text" class="form-control" asp-for="BaglantiHizi">
+                <label asp-for="Tip">Tipi:</label>
+                <select class="form-select custom-select" asp-for="Tip">
+                    <option value="td1">TD1</option>
+                    <option value="td2">TD2</option>
+                </select>
+
+                <label asp-for="Durum">Durumu:</label>
+                <select class="form-select custom-select" asp-for="Durum">
+                    <option value="Aktif">Aktif</option>
+                    <option value="Pasif">Pasif</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label asp-for="Mod">Modu:</label>
+                <select class="form-select custom-select" asp-for="Mod">
+                    <option value="1">Option 1 </option>
+                    <option value="2">Option 2</option>
+                </select>
+                <label asp-for="SeriNo">Seri No:</label>
+                <input type="text" class="form-control" asp-for="SeriNo">
+                <label asp-for="AlimTarihi">Alım Tarihi:</label>
+                <input type="date" class="form-control" asp-for="AlimTarihi">
+
+            </div>
+
+            <div class="col-md-4">
+                <label asp-for="Guc">Gücü:</label>
+                <input type="text" class="form-control" asp-for="Guc">
+                <label asp-for="MacAdres">MAC Adresi:</label>
+                <input type="text" class="form-control" asp-for="MacAdres">
+                <label asp-for="GarantiSuresi">Garanti Süresi:</label>
+                <input type="text" class="form-control" asp-for="GarantiSuresi">
+            </div>
+        </div>
+        <div class="row mt-3">
+
+            <div class="col-md-4">
+                <label class="form-check-label">Poe:</label>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" name="Poe">
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-md-12">
+                <label asp-for="Aciklama">Açıklama:</label>
+                <textarea class="form-control" aria-label="With textarea" asp-for="Aciklama"></textarea>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-md-12 d-flex justify-content-between">
+                <button type="button" class="btn btn-danger">Vazgeç</button>
+                <button type="submit" class="btn btn-primary">Kaydet</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#turDD").change(function () {
+            $("#altTurDD").html("");
+            var dropdown = document.getElementById("turDD");
+            var secilenTurId = dropdown.value;
+            if (secilenTurId !== "") {
+                $.ajax({
+                    type: "GET",
+                    url: "/List/AltTurGetir?TurId=" + secilenTurId,
+                    success: function (altTurler) {
+                        var sonuc = "";
+                        for (var i = 0; i < altTurler.length; i++) {
+                            sonuc += "<option value='" + altTurler[i].id + "'>" + altTurler[i].adi + "</option>"
+                        }
+                        $("#altTurDD").append(sonuc);
+                    }
+                })
+            }
+        });
+
+        $("#markaDD").change(function () {
+            $("#ustModelDD").html("");
+            var dropdown = document.getElementById("markaDD");
+            var secilenMarkaId = dropdown.value;
+            if (secilenMarkaId !== "") {
+                $.ajax({
+                    type: "GET",
+                    url: "/List/UstModelGetir?MarkaId=" + secilenMarkaId,
+                    success: function (ustModeller) {
+                        var sonuc = "";
+                        for (var i = 0; i < ustModeller.length; i++) {
+                            sonuc += "<option value='" + ustModeller[i].id + "'>" + ustModeller[i].adi + "</option>"
+                        }
+                        $("#ustModelDD").append(sonuc);
+
+                        $("#ustModelDD").trigger("change");
+                    }
+                })
+            }
+        });
+
+        $("#ustModelDD").change(function () {
+            $("#altModelDD").html("");
+            var dropdown = document.getElementById("ustModelDD");
+            var secilenUstModelId = dropdown.value;
+            if (secilenUstModelId !== "") {
+                $.ajax({
+                    type: "GET",
+                    url: "/List/AltModelGetir?UstModelId=" + secilenUstModelId,
+                    success: function (altModeller) {
+                        var sonuc = "";
+                        for (var i = 0; i < altModeller.length; i++) {
+                            sonuc += "<option value='" + altModeller[i].id + "'>" + altModeller[i].adi + "</option>"
+                        }
+                        $("#altModelDD").append(sonuc);
+                    }
+                })
+            }
+        });
+    });
+
+
+</script>
