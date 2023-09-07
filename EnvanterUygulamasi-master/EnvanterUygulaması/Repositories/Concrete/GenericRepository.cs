@@ -18,7 +18,6 @@ namespace EnvanterUygulaması.Repositories.Concrete
         {
             return await _entity.ToListAsync();
         }
-
         public async Task<TEntity> Ekle(TEntity entity)
         {
             try
@@ -38,22 +37,19 @@ namespace EnvanterUygulaması.Repositories.Concrete
             _entity.Update(entity);
             await _context.SaveChangesAsync();
         }
-
-        Task<TEntity?> IGenericRepository<TEntity>.Getir(int id)
+        public async Task<TEntity?> Getir(int id)
         {
-            throw new NotImplementedException();
+            return await _entity.FindAsync(id);
         }
-
         Task IGenericRepository<TEntity>.Sil(int id)
         {
             throw new NotImplementedException();
         }
-
-        
-
         Task IGenericRepository<TEntity>.TopluEkle(List<TEntity> entities)
         {
             throw new NotImplementedException();
         }
+
+
     }
 }

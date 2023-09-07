@@ -9,7 +9,7 @@
       </div>
       <br />
 <div class="mt-5 table-responsive">
-        <table class="table table-bordered">
+    <table class ="table table-bordered table-striped">
           <thead>
             <tr>
               <th>Türü</th>
@@ -25,7 +25,7 @@
               <th>Poe</th>
               <th>Ekleyen Kullanıcı</th>
               <th>Açıklama</th>
-              <th>Birim</th>
+              <th>Bölge</th>
             </tr>
           </thead>
           <tbody>
@@ -42,10 +42,21 @@
                    <td>@item.Durumu</td>
                    <td>@item.GarantiSuresi</td>
                    <td>@item.AlimTarihi</td>
-                   <td>@item.Poe</td>
+                    @if (item.Poe == true)
+                    {
+                        <td>Var</td>
+                    }
+                    else if (item.Poe == false)
+                    {
+                        <td>Yok</td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
                    <td>@item.EkleyenKullanici</td>
                    <td>@item.Aciklama</td>
-                   <td>@item.Birimi</td>
+                   <td>@item.Bolge</td>
                 </tr>
             }
         </tbody>

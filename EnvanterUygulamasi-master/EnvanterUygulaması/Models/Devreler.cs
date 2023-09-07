@@ -8,7 +8,7 @@ namespace EnvanterUygulaması.Models
         public int id { get; set; }
         public string Adi { get; set; }
         public int No { get; set; }
-        public string Bolge { get; set; }
+        public int BolgeId { get; set; }
         public int BulutID { get; set; }
         public string IpBlogu { get; set; }
         public string Durumu { get; set; }
@@ -18,5 +18,6 @@ namespace EnvanterUygulaması.Models
         public int EkleyenID { get; set; }
         public Bulutlar bulutlar { get; set; }
         public Kullanicilar kullanicilar { get; set; }
+        public Bolgeler bolgeler{ get; set; }
     }
 }

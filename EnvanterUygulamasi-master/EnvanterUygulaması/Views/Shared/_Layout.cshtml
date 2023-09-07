@@ -12,8 +12,14 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="~/css/style.css" rel="stylesheet">
 
+  <!--JQuery-->
+  <script src="~/lib/jquery/dist/jquery.min.js"></script>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+  <link href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap.min.css" rel="stylesheet" />
+
+  <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js "></script>
 
 </head>
 <body>
@@ -113,7 +119,13 @@
             <div class="collapse pl-3" id="donanimPMenu">
               <ul class="nav flex-column altbaslik">
                 <li class="nav-item">
-                  <a class="nav-link baslik" href="#">Donanım Markası Ekle</a>
+                  <a class="nav-link baslik" href="/Donanim/DonanimTurListe">Donanım Türü Ekle</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link baslik" href="/Donanim/DonanimAltTurListe">Donanım Alt Türü Ekle</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link baslik" href="/Donanim/DonanimMarkaListe">Donanım Markası Ekle</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link baslik" href="#">Donanım Üst Modeli Ekle</a>
@@ -133,7 +145,7 @@
             <div class="collapse pl-3" id="yazilimPMenu">
               <ul class="nav flex-column altbaslik">
                 <li class="nav-item">
-                  <a class="nav-link baslik" href="#">Yazılım Markası Ekle</a>
+                  <a class="nav-link baslik" href="/Yazilim/YazilimMarkaListe">Yazılım Markası Ekle</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link baslik" href="#">Alt Başlık</a>

@@ -1,6 +1,4 @@
-﻿using EnvanterUygulaması.Models;
-
-namespace EnvanterUygulaması.ViewModels
+﻿namespace EnvanterUygulaması.ViewModels
 {
     public class YazilimVM
     {
@@ -10,11 +8,10 @@ namespace EnvanterUygulaması.ViewModels
         public string Versiyonu { get; set; }
         public string Turu { get; set; }
         public int CihazSayisi { get; set; }
-        public DateTime AlimTarihi{ get; set; }
+        public string AlimTarihi{ get; set; }
         public int DestekSuresi{ get; set; }
         public string Aciklama{ get; set; }
+        public string Bolge { get; set; }
         public string EkleyenKullanici{ get; set; }
-        public string Birimi { get; set; }
-        public List<Liste> MarkaList { get; set; }
     }
 }

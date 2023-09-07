@@ -1,58 +1,53 @@
 ﻿@model EnvanterUygulaması.ViewModels.DonanimEkleDuzenleVM;
+<div class="mt-5">
+    <h3 class="text-center">Donanım Ekle Düzenle</h3>
+</div>
 
 @if (TempData["HataMesaji"] != null)
 {
     <div class="alert alert-danger">@TempData["HataMesaji"]</div>
 }
 
-
-<div class="custom-container mt-5">
+<div class="container mt-5">
     <form asp-controller="Donanim" asp-action="DonanimEkle" method="post">
         <div class="row mt-3">
             <div class="col-md-4">
-
                 <label asp-for="TurId">Türü:</label>
                 @Html.DropDownListFor(model => model.TurId, new SelectList(Model.TurList, "id", "Adi"),"Türü seçiniz",
                 new { @class = "form-select", @id="turDD", name="TurId"})
-
-                <label asp-for="UstModelId">Üst Model:</label>
-                @Html.DropDownListFor(model => model.UstModelId, new SelectList(Model.UstModelList, "id", "Adi"),"Üst Model seçiniz",
-                new { @class = "form-select", @id="ustModelDD",name="UstModelId"})
-
-
             </div>
             <div class="col-md-4">
-
-                <label asp-for="AltTurId">Alt Türü:</label>
+                <label id="altTurLabel" style="display:none;" asp-for="AltTurId">Alt Türü:</label>
                 @Html.DropDownListFor(model => model.AltTurId, new SelectList(Model.AltTurList, "id", "Adi"),"Alt Türü seçiniz",
-                new { @class = "form-select", @id="altTurDD", name="AltTurId"})
-                <label asp-for="AltModelId">Alt Model:</label>
-                @Html.DropDownListFor(model => model.AltModelId, new SelectList(Model.AltModelList, "id", "Adi"),"Alt Model seçiniz",
-                new { @class = "form-select", @id="altModelDD", name="AltModelId"})
-
+                new { @class = "form-select", @id="altTurDD", name="AltTurId" , style="display:none;"})
             </div>
             <div class="col-md-4">
-
                 <label asp-for="MarkaId">Marka:</label>
                 @Html.DropDownListFor(model => model.MarkaId, new SelectList(Model.MarkaList, "id", "Adi"),"Marka seçiniz",
                 new { @class = "form-select", @id="markaDD" ,name="MarkaId"})
-                <label asp-for="Birim">Birimi:</label>
-                <select asp-for="Birim" class="form-select custom-select" aria-label="Default select example">
-                    <option value="deneme1">denemebolge1</option>
-                    <option value="deneme2">denemebolge2</option>
-                </select>
+            </div>
+            <div class="col-md-4">
+                <label asp-for="UstModelId">Üst Model:</label>
+                @Html.DropDownListFor(model => model.UstModelId, new SelectList(Model.UstModelList, "id", "Adi"),"Üst Model seçiniz",
+                new { @class = "form-select", @id="ustModelDD",name="UstModelId"})
+            </div>
+            <div class="col-md-4">
+                <label asp-for="AltModelId">Alt Model:</label>
+                @Html.DropDownListFor(model => model.AltModelId, new SelectList(Model.AltModelList, "id", "Adi"),"Alt Model seçiniz",
+                new { @class = "form-select", @id="altModelDD", name="AltModelId"})
+            </div>
+
+            <div class="col-md-4">
+                <label asp-for="BolgeId">Bölge:</label>
+                @Html.DropDownListFor(model => model.BolgeId, new SelectList(Model.BolgeList, "id", "Adi"),"Bölge seçiniz",
+                new { @class = "form-select", @id="BolgeDD",name="BolgeId"})
             </div>
         </div>
 
         <div class="row">
             <div class="col-md-4">
-                <label asp-for="BaglantiHizi">Bağlantı Hızı:</label>
-                <input type="text" class="form-control" asp-for="BaglantiHizi">
-                <label asp-for="Tip">Tipi:</label>
-                <select class="form-select custom-select" asp-for="Tip">
-                    <option value="td1">TD1</option>
-                    <option value="td2">TD2</option>
-                </select>
+                <label id="bHizLabel" style="display:none;" asp-for="BaglantiHizi">Bağlantı Hızı:</label>
+                <input id="bHiz" style="display:none;" type="number" class="form-control" asp-for="BaglantiHizi">
 
                 <label asp-for="Durum">Durumu:</label>
                 <select class="form-select custom-select" asp-for="Durum">
@@ -61,8 +56,8 @@
                 </select>
             </div>
             <div class="col-md-4">
-                <label asp-for="Mod">Modu:</label>
-                <select class="form-select custom-select" asp-for="Mod">
+                <label id="modLabel" style="display:none;" asp-for="Mod">Modu:</label>
+                <select id="mod" style="display:none;" class="form-select custom-select" asp-for="Mod">
                     <option value="1">Option 1 </option>
                     <option value="2">Option 2</option>
                 </select>
@@ -74,20 +69,21 @@
             </div>
 
             <div class="col-md-4">
-                <label asp-for="Guc">Gücü:</label>
-                <input type="text" class="form-control" asp-for="Guc">
-                <label asp-for="MacAdres">MAC Adresi:</label>
-                <input type="text" class="form-control" asp-for="MacAdres">
+                <label id="gucLabel" style="display:none;" asp-for="Guc">Gücü:</label>
+                <input id="guc" style="display:none;" type="number" class="form-control" asp-for="Guc">
+                <label id="macLabel" style="display:none;"asp-for="MacAdres">MAC Adresi:</label>
+                <input id="mac" pattern="[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}"
+                       style="display:none;" type="text" class="form-control" asp-for="MacAdres" data-toggle="tooltip" data-placement="top" title="Örnek: 1A:2B:3C:4D:5E:6F">
                 <label asp-for="GarantiSuresi">Garanti Süresi:</label>
-                <input type="text" class="form-control" asp-for="GarantiSuresi">
+                <input type="number" class="form-control" asp-for="GarantiSuresi" data-toggle="tooltip" data-placement="top" title="Ay şeklinde belirtiniz.">
             </div>
         </div>
         <div class="row mt-3">
 
             <div class="col-md-4">
-                <label class="form-check-label">Poe:</label>
+                <label id="poeLabel" style="display:none;" class="form-check-label">Poe:</label>
                 <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" name="Poe">
+                    <input style="display:none;" asp-for="Poe" class="form-check-input" type="checkbox" role="switch" id="poe">
                 </div>
             </div>
 
@@ -101,8 +97,9 @@
         </div>
 
         <div class="row mt-3">
-            <div class="col-md-12 d-flex justify-content-between">
-                <button type="button" class="btn btn-danger">Vazgeç</button>
+            <div class="col-md-12 d-flex justify-content-end">
+                <a href="/Donanim/EkledigimDonanimlar" type="button" class="btn btn-danger">Vazgeç</a>
+                &ensp;
                 <button type="submit" class="btn btn-primary">Kaydet</button>
             </div>
         </div>
@@ -119,11 +116,32 @@
                     type: "GET",
                     url: "/List/AltTurGetir?TurId=" + secilenTurId,
                     success: function (altTurler) {
-                        var sonuc = "";
+                        var sonuc = "<option value=''>Alt tür seçiniz</option>";
                         for (var i = 0; i < altTurler.length; i++) {
                             sonuc += "<option value='" + altTurler[i].id + "'>" + altTurler[i].adi + "</option>"
                         }
                         $("#altTurDD").append(sonuc);
+                    }
+                })
+            }
+        });
+
+        $("#turDD").change(function () {
+            $("#markaDD").html("");
+            var dropdown = document.getElementById("turDD");
+            var secilenTurId = dropdown.value;
+            if (secilenTurId !== "") {
+                $.ajax({
+                    type: "GET",
+                    url: "/List/DonanimMarkasiGetir?TurId=" + secilenTurId,
+                    success: function (donanimMarkalari) {
+                        var sonuc = "<option value=''>Marka seçiniz</option>";
+                        for (var i = 0; i < donanimMarkalari.length; i++) {
+                            sonuc += "<option value='" + donanimMarkalari[i].id + "'>" + donanimMarkalari[i].adi + "</option>"
+                        }
+                        $("#markaDD").append(sonuc);
+
+                        $("#markaDD").trigger("change");
                     }
                 })
             }
@@ -138,7 +156,7 @@
                     type: "GET",
                     url: "/List/UstModelGetir?MarkaId=" + secilenMarkaId,
                     success: function (ustModeller) {
-                        var sonuc = "";
+                        var sonuc = "<option value=''>Üst Model seçiniz</option>";
                         for (var i = 0; i < ustModeller.length; i++) {
                             sonuc += "<option value='" + ustModeller[i].id + "'>" + ustModeller[i].adi + "</option>"
                         }
@@ -159,7 +177,7 @@
                     type: "GET",
                     url: "/List/AltModelGetir?UstModelId=" + secilenUstModelId,
                     success: function (altModeller) {
-                        var sonuc = "";
+                        var sonuc = "<option value=''>Alt Model seçiniz</option>";
                         for (var i = 0; i < altModeller.length; i++) {
                             sonuc += "<option value='" + altModeller[i].id + "'>" + altModeller[i].adi + "</option>"
                         }
@@ -168,6 +186,126 @@
                 })
             }
         });
+
+        $("#turDD").change(function () {
+            var selectedDonanimTuru = $(this).val();
+            console.log(selectedDonanimTuru);
+
+            switch (selectedDonanimTuru) {
+                case '2':
+                    $("#poe").show();
+                    $("#poeLabel").show();
+                    $("#altTurLabel").hide();
+                    $("#altTurDD").hide();
+                    $("#tipLabel").hide();
+                    $("#tip").hide();
+                    $("#mac").show();
+                    $("#macLabel").show();
+                    break;
+                case '3':
+                    $("#poe").hide();
+                    $("#poeLabel").hide();
+                    $("#altTurLabel").hide();
+                    $("#altTurDD").hide();
+                    $("#tipLabel").hide();
+                    $("#tip").hide();
+                    $("#mac").show();
+                    $("#macLabel").show();
+                    break;
+                case '4':
+                    $("#poe").hide();
+                    $("#poeLabel").hide();
+                    $("#altTurLabel").hide();
+                    $("#altTurDD").hide();
+                    $("#tipLabel").hide();
+                    $("#tip").hide();
+                    $("#mac").show();
+                    $("#macLabel").show();
+                    break;
+                case '5':
+                    $("#poe").hide();
+                    $("#poeLabel").hide();
+                    $("#altTurLabel").show();
+                    $("#altTurDD").show();
+                    $("#tipLabel").hide();
+                    $("#tip").hide();
+                    $("#mac").show();
+                    $("#macLabel").show();
+                    break;
+                case '6':
+                    $("#poe").hide();
+                    $("#poeLabel").hide();
+                    $("#altTurLabel").hide();
+                    $("#altTurDD").hide();
+                    $("#tipLabel").hide();
+                    $("#tip").hide();
+                    $("#mac").show();
+                    $("#macLabel").show();
+                    break;
+            }
+
+        });
+
+        $("#altTurDD").change(function () {
+            var selectedAltTur = $(this).val();
+
+            switch (selectedAltTur) {
+                case '1':
+                case '2':
+                case '3':
+                    $("#mac").show();
+                    $("#macLabel").show();
+                    $("#bHiz").show();
+                    $("#bHizLabel").show();
+                    $("#guc").hide();
+                    $("#gucLabel").hide();
+                    $("#mod").hide();
+                    $("#modLabel").hide();
+                    break;
+                case '5':
+                    $("#mac").hide();
+                    $("#macLabel").hide();
+                    $("#guc").show();
+                    $("#gucLabel").show();
+                    $("#mod").hide();
+                    $("#modLabel").hide();
+                    $("#bHiz").hide();
+                    $("#bHizLabel").hide();
+                    break;
+                case '6':
+                    $("#mac").hide();
+                    $("#macLabel").hide();
+                    $("#bHiz").show();
+                    $("#bHizLabel").show();
+                    $("#mod").hide();
+                    $("#modLabel").hide();
+                    $("#guc").hide();
+                    $("#gucLabel").hide();
+                    break;
+                case '8':
+                    $("#mac").hide();
+                    $("#macLabel").hide();
+                    $("#bHiz").hide();
+                    $("#bHizLabel").hide();
+                    $("#mod").hide();
+                    $("#modLabel").hide();
+                    $("#guc").hide();
+                    $("#gucLabel").hide();
+                    break;
+                case '9':
+                    $("#mac").hide();
+                    $("#macLabel").hide();
+                    $("#bHiz").show();
+                    $("#bHizLabel").show();
+                    $("#mod").show();
+                    $("#modLabel").show();
+                    $("#guc").hide();
+                    $("#gucLabel").hide();
+                    break;
+            }
+        });
+
+        $('[data-toggle="tooltip"]').tooltip();
     });
 
 

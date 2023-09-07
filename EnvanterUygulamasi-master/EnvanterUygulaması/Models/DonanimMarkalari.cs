@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿ using Microsoft.EntityFrameworkCore;
 using EnvanterUygulaması.Context;
 
 namespace EnvanterUygulaması.Models
@@ -10,5 +10,6 @@ namespace EnvanterUygulaması.Models
         public string Durumu { get; set; }
         public ICollection<Donanimlar> donanimlar { get; }=new List<Donanimlar>();
         public ICollection<UstModeller> ustModeller { get; } = new List<UstModeller>();
+        public ICollection<DonanimMarkaTurleri> donanimMarkaTurleri { get; set; }
     }
 }

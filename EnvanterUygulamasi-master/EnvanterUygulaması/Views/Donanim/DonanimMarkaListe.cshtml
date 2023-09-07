@@ -1,0 +1,163 @@
+﻿@model EnvanterUygulaması.ViewModels.DonanimPanelVM
+
+<div class="mt-5 align-items-center">
+    <h3 class="text-center">Donanım Marka Listesi</h3>
+</div>
+
+<div class="row">
+    <div class="col-6">
+        <label class="form-label">Ad</label>
+        <input type="text" name="Ad" id="ad" class="form-control" />
+        <label id="mesaj"></label>
+        <input type="hidden" name="Id" id="id" value="0" />
+        <input type="hidden" name="guncelleSatirIndeks" id="guncelleSatirIndeks" value="0" />
+    </div>
+
+    <div class="col-6">
+        <label asp-for="TurId" class="form-label">Türü:</label>
+        @for (int i = 0; i < Model.TurList.Count; i++)
+        {
+            <div class="col-auto">
+                <label>@Model.TurList[i].TurAdi</label>
+                <input name="TurIdler_chk" type="checkbox" value="@Model.TurList[i].TurId"  />
+            </div>
+        }
+    </div>   
+</div>
+
+<a class="btn btn-primary" href="#" id="yeniMarka_btn">Yeni Marka Ekle</a>
+<a style="display: none;" class="btn btn-success" href="#" id="vazgecMarka_btn">Vazgeç </a>
+<a style="display: none;" class="btn btn-success" href="#" id="kaydetMarka_btn">Kaydet</a>
+<div class="mt-2 card table-responsive">
+
+    <table class="table table-striped" id="donanimMarkaTablo">
+        <thead>
+            <tr>
+                <th>İşlem</th>
+                <th>Marka Adı</th>
+                <th>Türü</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var marka in Model.MarkaList)
+            {
+                <tr>
+                    <td>
+                        <a class="btn btn-primary markaGuncelle" data-id="@marka.id" data-ad="@marka.Adi">Güncelle</a>
+                    </td>
+                    <td>@marka.Adi</td>
+                    <td>@marka.TurAdi</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $(document).ready(function () {
+        const donanimMarkaTablo = $('#donanimMarkaTablo').DataTable({
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/tr.json',
+            }
+        });
+       
+        $(function () {
+            // var kullanici_tablo = $('#kullaniciTablo').DataTable();
+            //const donanimMarkaTablo = new DataTable('#donanimMarkaTablo');
+
+            $("#yeniMarka_btn").click(function () {
+                var ad = $("#ad").val();
+                console.log(ad);
+                if (ad == null || ad == "") {
+                    $("#mesaj").empty();
+                    $("#mesaj").append("Marka adı giriniz");
+                }
+                else {
+                    var url = "/Donanim/DonanimMarkaEkleDuzenle";
+                    $.ajax({
+                        url: url,
+                        type: "POST",
+                        data: {
+                            id: 0,
+                            adi: ad
+                        },
+                        success: function (data) {
+                            console.log(data.adi)
+                            if (data != null) {
+                                var guncelleBtn = "<a class='btn btn-primary markaGuncelle' data-id='" + data.id + "' data-ad='" + data.adi + "' >Güncelle</a>";
+                                donanimMarkaTablo.row.add([guncelleBtn, data.adi]).draw();
+                                alert("Kayıt eklendi");
+                                $("#mesaj").empty();
+                            }
+                        }
+                    })
+                }
+            });
+
+            //dinamik oluşabilen dom elemanlarına .click erişemeyebilir
+            //bu yüzden .on ile sabit dom elemanı üzerinden erişilir
+            $("#donanimMarkaTablo").on("click", ".markaGuncelle", function () {
+                var markaId = $(this).data("id");
+                var markaAd = $(this).data("ad");
+                var indeks = donanimMarkaTablo.row($(this).parents('tr')).index();
+                $("#guncelleSatirIndeks").val(indeks);
+                $("#id").val(markaId);
+                $("#ad").val(markaAd);
+                $("#yeniMarka_btn").hide();
+                $("#vazgecMarka_btn").show();
+                $("#kaydetMarka_btn").show();
+                $("#mesaj").empty();
+            });
+
+            $("#vazgecMarka_btn").click(function () {
+                MarkaFormResetle();
+            });
+
+            $("#kaydetMarka_btn").click(function () {
+                var markaId = $("#id").val();
+                var markaAd = $("#ad").val();
+                if (markaAd == null || markaAd == "") {
+                    $("#mesaj").append("Marka adı giriniz");
+                }
+                else {
+                    var url = "/Donanim/DonanimMarkaEkleDuzenle";
+                    $.ajax({
+                        url: url,
+                        type: "POST",
+                        data: {
+                            id: markaId,
+                            adi: markaAd,
+                        },
+                        success: function (data) {
+
+                            console.log(data.adi)
+                            if (data != null) {
+                                var guncelleBtn = "<a class='btn btn-primary markaGuncelle' data-id='" + data.id + "' data-ad='" + data.adi + "' >Güncelle</a>";
+                                var yeniData = [guncelleBtn, data.adi]
+                                var indeks = $("#guncelleSatirIndeks").val();
+
+                                donanimMarkaTablo.row(indeks).data(yeniData).draw();
+                                //donanimMarka_tablo.cell({ row: indeks, column: 1 }).data(data.ad).draw();
+                                //donanimMarka_tablo.cell({ row: indeks, column: 0 }).data(guncelleBtn).draw();
+
+                                alert("Kayıt güncellendi");
+                                $("#mesaj").empty();
+                            }
+                        }
+                    })
+
+                    MarkaFormResetle();
+                }
+
+            });
+        })
+
+        function MarkaFormResetle() {
+            $("#id").val("");
+            $("#ad").val("");
+            $("#yeniMarka_btn").show();
+            $("#vazgecMarka_btn").hide();
+            $("#kaydetMarka_btn").hide();
+        }
+    });
+</script>

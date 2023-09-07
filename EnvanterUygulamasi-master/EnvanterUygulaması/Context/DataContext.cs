@@ -1,5 +1,7 @@
 ﻿using EnvanterUygulaması.Models;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Xml;
 
 namespace EnvanterUygulaması.Context
 {
@@ -12,6 +14,7 @@ namespace EnvanterUygulaması.Context
         public DbSet<Yazilimlar> Yazilimlar { get; set; }
         public DbSet<Donanimlar> Donanimlar { get; set; }
         public DbSet<DonanimMarkalari> DonanimMarkalari { get; set; }
+        public DbSet<DonanimMarkaTurleri> DonanimMarkaTurleri { get; set; }
         public DbSet<UstModeller> UstModeller { get; set; }
         public DbSet<AltModeller> AltModeller { get; set; }
         public DbSet<Bulutlar> Bulutlar { get; set; }
@@ -23,6 +26,7 @@ namespace EnvanterUygulaması.Context
         public DbSet<DonanimTurleri> DonanimTurleri { get; set; }
         public DbSet<DonanimAltTurleri> DonanimAltTurleri { get; set; }
         public DbSet<loglar> Loglar { get; set; }
+        public DbSet<Bolgeler> Bolgeler { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Yazilimlar>()
@@ -106,6 +110,38 @@ namespace EnvanterUygulaması.Context
                 .HasForeignKey(d => d.DonanimMarkaId)
                 .OnDelete(DeleteBehavior.Restrict); 
 
+            modelBuilder.Entity<DonanimMarkaTurleri>()
+                .HasKey(mt => new { mt.MarkaId, mt.TurId });
+
+            modelBuilder.Entity<DonanimMarkaTurleri>()
+                .HasOne(mt => mt.donanimMarkalari)
+                .WithMany(dm => dm.donanimMarkaTurleri)
+                .HasForeignKey(mt => mt.MarkaId);
+
+            modelBuilder.Entity<DonanimMarkaTurleri>()
+                .HasOne(mt => mt.donanimTurleri)
+                .WithMany(dt => dt.donanimMarkaTurleri)
+                .HasForeignKey(mt => mt.TurId);
+
+            modelBuilder.Entity<Bulutlar>()
+                .Property(b => b.id) 
+                .ValueGeneratedNever(); 
+
+            modelBuilder.Entity<Donanimlar>()
+                .HasOne(d=>d.bolgeler)
+                .WithMany(b=>b.donanimlar)
+                .HasForeignKey(d=>d.BolgeId);
+            
+            modelBuilder.Entity<Yazilimlar>()
+                .HasOne(y=>y.bolgeler)
+                .WithMany(b=>b.yazilimlar)
+                .HasForeignKey(y=>y.BolgeId);
+              
+            modelBuilder.Entity<Devreler>()
+                .HasOne(d=>d.bolgeler)
+                .WithMany(b=>b.devreler)
+                .HasForeignKey(d=>d.BolgeId);
+            
             base.OnModelCreating(modelBuilder);
         }
     }

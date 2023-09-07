@@ -16,12 +16,11 @@ namespace EnvanterUygulaması.Models
         public string Durumu { get; set; }
         public DateTime AlimTarihi { get; set; }
         public int GarantiSuresi { get; set; }
-        public bool? Poe { get; set; }
+        public bool Poe { get; set; }
         public int? BaglantiHizi { get; set; }
         public string? Modu { get; set; }
-        public string? Tipi { get; set; } 
         public string? Gucu { get; set; } 
-        public string Birim { get; set; }
+        public int BolgeId { get; set; }
         public string Aciklama { get; set; }
         public int EkleyenID { get; set; }
         public DonanimTurleri donanimTurleri { get; set; }
@@ -30,5 +29,6 @@ namespace EnvanterUygulaması.Models
         public UstModeller ustModeller { get; set; }
         public AltModeller altModeller { get; set; }
         public Kullanicilar kullanicilar { get; set; }
+        public Bolgeler bolgeler { get; set; }
     }
 }

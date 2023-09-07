@@ -14,9 +14,11 @@ namespace EnvanterUygulaması.Models
         public DateTime AlimTarihi { get; set; }
         public int DestekSuresi { get; set; }
         public string Aciklama { get; set; }
+        public int BolgeId { get; set; }
         public int EkleyenID { get; set; }
-        public string Birim { get; set; }
         public YazilimMarkalari yazilimMarkalari { get; set; }
         public Kullanicilar kullanicilar { get; set; }
+        public Bolgeler bolgeler { get; set; }
+
     }
 }

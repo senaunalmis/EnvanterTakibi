@@ -11,6 +11,7 @@ namespace EnvanterUygulaması.ViewModels
             MarkaList=new List<Liste>();
             UstModelList=new List<Liste>();
             AltModelList=new List<Liste>();
+            BolgeList=new List<Liste>();
         }
         public int id { get; set; } 
 
@@ -26,7 +27,7 @@ namespace EnvanterUygulaması.ViewModels
 
         public string Durum { get; set; }
 
-        public string Birim { get; set; }
+        public int BolgeId { get; set; }
 
         public string? MacAdres { get; set; }
 
@@ -36,7 +37,7 @@ namespace EnvanterUygulaması.ViewModels
 
         public int GarantiSuresi { get; set; }
 
-        public bool? Poe { get; set; }
+        public bool Poe { get; set; }
         public string Aciklama { get; set; } 
 
         public int? BaglantiHizi { get; set; }
@@ -45,12 +46,11 @@ namespace EnvanterUygulaması.ViewModels
 
         public string? Guc { get; set; }
 
-        public string? Tip { get; set; }
-
         public List<Liste> TurList { get; set; }
         public List<Liste> AltTurList { get; set; }
         public List<Liste>  MarkaList{ get; set; }
         public List<Liste>  UstModelList{ get; set; }
         public List<Liste>  AltModelList{ get; set; }
+        public List<Liste>  BolgeList{ get; set; }
     }
 }

@@ -11,10 +11,15 @@ namespace EnvanterUygulaması.Controllers
     {
         private readonly IYazilimRepository _yazilimRepository;
         private readonly IListRepository _listRepository;
-        public YazilimController(IYazilimRepository yazilimRepository, IListRepository listRepository)
+        private readonly IYazilimMarkaRepository _yazilimMarkaRepository;
+
+        public YazilimController(IYazilimRepository yazilimRepository,
+            IListRepository listRepository, 
+            IYazilimMarkaRepository yazilimMarkaRepository)
         {
             _yazilimRepository = yazilimRepository;
             _listRepository = listRepository;
+            _yazilimMarkaRepository = yazilimMarkaRepository;
         }
 
         public async Task<IActionResult> YazilimListe() 
@@ -25,24 +30,30 @@ namespace EnvanterUygulaması.Controllers
                 Markasi=x.yazilimMarkalari.Adi,
                 Aciklama=x.Aciklama,
                 Adi=x.Adi,
-                AlimTarihi=x.AlimTarihi,
-                CihazSayisi=x.CihazSayisi,
+                AlimTarihi=x.AlimTarihi.ToShortDateString(),
+                CihazSayisi =x.CihazSayisi,
                 DestekSuresi=x.DestekSuresi,
                 EkleyenKullanici=x.kullanicilar.Adi,
                 Turu=x.Turu,
-                Versiyonu=x.Versiyon
+                Versiyonu=x.Versiyon,
+                Bolge = x.bolgeler.Adi         
             }).ToList();
             return View(yazilimListesi);
         }
-        public async Task<IActionResult> YazilimEkle(int id=0)
+        public async Task<IActionResult> YazilimEkle(int id = 0)
         {
-           YazilimEkleDuzenleVM yazilimEkleDuzenleVM =new YazilimEkleDuzenleVM();
-           List<Liste> markaList = await _listRepository.YazilimMarkaListesiGetir();
-           yazilimEkleDuzenleVM.MarkaList=markaList;
-            if(id!=0)
+            YazilimEkleDuzenleVM yazilimEkleDuzenleVM = new YazilimEkleDuzenleVM()
+            {
+                AlimTarihi = DateTime.Now
+            };
+            List<Liste> markaList = await _listRepository.YazilimMarkaListesiGetir();
+            yazilimEkleDuzenleVM.MarkaList = markaList;
+            List<Liste> bolgeList = await _listRepository.BolgeListesiGetir();
+            yazilimEkleDuzenleVM.BolgeList = bolgeList;
+            if (id != 0)
             {
                 var yazilim = await _yazilimRepository.Getir(id);
-                if(yazilim==null)
+                if (yazilim == null)
                 {
                     RedirectToAction("EkledigimYazilimlar");
                 }
@@ -56,8 +67,11 @@ namespace EnvanterUygulaması.Controllers
                     MarkaId = yazilim.YazilimMarkaID,
                     Turu = yazilim.Turu,
                     Versiyonu = yazilim.Versiyon,
-                    Birimi=yazilim.Birim
+                    BolgeId = yazilim.BolgeId,
+                    id= yazilim.id
                 };
+                yazilimEkleDuzenleVM.MarkaList = markaList;
+                yazilimEkleDuzenleVM.BolgeList = bolgeList;
             }
 
             return View(yazilimEkleDuzenleVM);
@@ -68,7 +82,7 @@ namespace EnvanterUygulaması.Controllers
         {
             try
             {
-                if(yazilimEkleDuzenleVM.id==0)
+                if (yazilimEkleDuzenleVM.id == 0)
                 {
                     var eklenenyazilim = await _yazilimRepository.Ekle(new Yazilimlar
                     {
@@ -81,8 +95,7 @@ namespace EnvanterUygulaması.Controllers
                         Turu = yazilimEkleDuzenleVM.Turu,
                         Versiyon = yazilimEkleDuzenleVM.Versiyonu,
                         YazilimMarkaID = yazilimEkleDuzenleVM.MarkaId,
-                        Birim=yazilimEkleDuzenleVM.Birimi
-
+                        BolgeId = yazilimEkleDuzenleVM.BolgeId
                     });
                     RedirectToAction("EkledigimYazilimlar");
                 }
@@ -103,7 +116,8 @@ namespace EnvanterUygulaması.Controllers
                         mevcutyazilim.Turu = yazilimEkleDuzenleVM.Turu;
                         mevcutyazilim.Versiyon = yazilimEkleDuzenleVM.Versiyonu;
                         mevcutyazilim.YazilimMarkaID = yazilimEkleDuzenleVM.MarkaId;
-                        mevcutyazilim.Birim = yazilimEkleDuzenleVM.Birimi;
+                        mevcutyazilim.BolgeId = yazilimEkleDuzenleVM.BolgeId;
+                       
                         await _yazilimRepository.Guncelle(mevcutyazilim);
                     }
 
@@ -111,20 +125,68 @@ namespace EnvanterUygulaması.Controllers
             }
             catch (Exception)
             {
-
-
                 throw;
             }
             return RedirectToAction("EkledigimYazilimlar");
-            
         }
-        public IActionResult EkledigimYazilimlar()
+        public async Task<IActionResult> EkledigimYazilimlar()
         {
-            return View();
+            var yazilimlar = await _yazilimRepository.TumunuGetirInclude();
+            List<YazilimVM> yazilimListesi = yazilimlar.Select(x => new YazilimVM()
+            {
+                Markasi = x.yazilimMarkalari.Adi,
+                Aciklama = x.Aciklama,
+                Adi = x.Adi,
+                AlimTarihi = x.AlimTarihi.ToShortDateString(),
+                CihazSayisi = x.CihazSayisi,
+                DestekSuresi = x.DestekSuresi,
+                EkleyenKullanici = x.kullanicilar.Adi,
+                Turu = x.Turu,
+                Versiyonu = x.Versiyon,
+                Bolge = x.bolgeler.Adi,
+                id =x.id
+            }).ToList();
+            return View(yazilimListesi);
         }
         public IActionResult Index()
         {
             return View();
+        }
+
+        public async Task<IActionResult> YazilimMarkaListe()
+        {
+            YazilimPanelVM yazilimPanelVM = new YazilimPanelVM();
+            var markalar = await _yazilimMarkaRepository.TumunuGetir();
+            List<Liste> liste = markalar.Select(x => new Liste()
+            {
+                id=x.id,
+                Adi=x.Adi,
+
+            }).ToList();
+
+            yazilimPanelVM.MarkaList = liste;
+            return View(yazilimPanelVM);
+        }
+
+        public async Task<JsonResult?> YazilimMarkaEkleDuzenle(YazilimPanelVM yazilimPanelVM)
+        {
+            YazilimMarkalari? markaEntity;
+            if (yazilimPanelVM.id == 0)
+            {
+                markaEntity = new YazilimMarkalari { Adi=yazilimPanelVM.Adi, Durumu="Aktif"};
+                var sonuc = await _yazilimMarkaRepository.Ekle(markaEntity);
+                return Json(sonuc);
+            }
+            else
+            {
+                markaEntity = await _yazilimMarkaRepository.Getir(yazilimPanelVM.id);
+                if (markaEntity == null)
+                    return null;
+                markaEntity.Durumu = "Aktif";
+                markaEntity.Adi = yazilimPanelVM.Adi;
+                await _yazilimMarkaRepository.Guncelle(markaEntity);
+                return Json(markaEntity);
+            }
         }
     }
 }

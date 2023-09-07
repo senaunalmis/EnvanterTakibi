@@ -2,8 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\EnvanterUygulaması",
-    "\\EnvanterUygulaması\\Controllers"
+    "\\EnvanterUygulaması\\Controllers",
+    "\\EnvanterUygulaması\\ViewModels"
   ],
-  "SelectedNode": "\\EnvanterUygulaması\\Controllers\\DonanimController.cs",
+  "SelectedNode": "\\EnvanterUygulaması\\Controllers\\YazilimController.cs",
   "PreviewInSolutionExplorer": false
 }

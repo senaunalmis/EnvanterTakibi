@@ -16,10 +16,29 @@ namespace EnvanterUygulaması.Controllers
             return View();
         }
 
+        [HttpPost]
+        public async Task<JsonResult> BulutAlanlariDoldur(int BulutId)
+        {
+            var bulut = await _listRepository.BulutOzellikleriGetir(BulutId);
+            if (bulut != null)
+            {
+                return Json(new { bulutId = bulut.id, anaDevreNo = bulut.AnaDevreNo });
+            }
+            else
+            {
+                return Json(new { BulutId = "", AnaDevreNo = "" });
+            }
+        }
         public async Task<JsonResult> AltTurGetir(int TurId)
         {
             var altTurListe = await _listRepository.AltTurListesiGetir(TurId);
             return Json(altTurListe);
+        }
+
+        public async Task<JsonResult> DonanimMarkasiGetir(int TurId)
+        {
+            var dMarkaListe = await _listRepository.DonanimMarkaListesiGetir(TurId);
+            return Json(dMarkaListe);
         }
         public async Task<JsonResult> UstModelGetir(int MarkaId)
         {

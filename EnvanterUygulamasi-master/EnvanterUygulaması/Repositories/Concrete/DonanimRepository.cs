@@ -28,6 +28,7 @@ namespace EnvanterUygulaması.Repositories.Concrete
                 .Include(d => d.ustModeller)
                 .Include(d => d.altModeller)
                 .Include(d => d.kullanicilar)
+                .Include(d=>d.bolgeler)
                 .ToListAsync();
 
             return donanimList;

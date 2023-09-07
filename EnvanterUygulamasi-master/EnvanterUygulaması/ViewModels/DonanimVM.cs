@@ -13,11 +13,11 @@ namespace EnvanterUygulaması.ViewModels
         public string? MacAdresi { get; set; }
         public string SeriNo { get; set; }
         public string Durumu { get; set; }
-        public DateTime AlimTarihi{ get; set; }
+        public string AlimTarihi{ get; set; }
         public int GarantiSuresi { get; set; }
-        public bool? Poe { get; set; }
+        public bool Poe { get; set; }
         public string Aciklama { get; set; }
-        public string Birimi { get; set; }
+        public string Bolge { get; set; }
         public string EkleyenKullanici { get; set; }
 
         public List<Liste> MarkaList { get; set; }

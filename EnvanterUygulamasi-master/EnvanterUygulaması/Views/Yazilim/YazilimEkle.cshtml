@@ -1,59 +1,56 @@
-﻿@model EnvanterUygulaması.ViewModels.YazilimEkleDuzenleVM;
-<div class="custom-container mt-5">
+﻿@using EnvanterUygulaması.Repositories.Concrete;
+@model EnvanterUygulaması.ViewModels.YazilimEkleDuzenleVM
+
+<div class="mt-5">
+    <h3 class="text-center">Yazılım Ekle Düzenle</h3>
+</div>
+<div class="mt-5">
+
+    
     <form asp-controller="Yazilim" asp-action="YazilimEkle" method="post">
-        <div class="row">
-            <div class="col-md-4 col-sm-6">
-                <div class="d-flex align-items ust-model ">
+        <div class="row mt-3">
+            <div class="col-md-4">
                     <label asp-for="MarkaId">Marka:</label>
                     @Html.DropDownListFor(model => model.MarkaId, new SelectList(Model.MarkaList, "id", "Adi"),"Marka seçiniz",
                     new { @class = "form-select", @id="MarkaDD",name="MarkaId"})
-                </div>
             </div>
-            <div class="col-md-4 col-sm-6">
+            <div class="col-md-4">
                 <label asp-for="Adi">Adı:</label>
                 <input asp-for="Adi" type="text" class="form-control">
             </div>
-            <div class="col-md-4 col-sm-6">
+            <div class="col-md-4">
                 <label asp-for="Versiyonu">Versiyonu:</label>
                 <input asp-for="Versiyonu" type="text" class="form-control">
             </div>
         </div>
 
         <div class="row mt-3">
-            <div class="col-md-4 col-sm-6">
-                <div class="ust-model  d-flex align-items">
-                    <label asp-for="Turu">Tür:</label>
-                    <select asp-for="Turu" class="form-select" aria-label="Default select example">
-                        <option value="Sanal">Sanal</option>
-                        <option value="Fiziksel">Fiziksel</option>
-                    </select>
-                </div>
+            <div class="col-md-4">
+                <label asp-for="Turu">Tür:</label>
+                <select asp-for="Turu" class="form-select" aria-label="Default select example">
+                    <option value="Sanal">Sanal</option>
+                    <option value="Fiziksel">Fiziksel</option>
+                </select>
             </div>
-            <div class="col-md-4 col-sm-6">
-                <label asp-for="CihazSayisi">Cihaz Sayısı:</label>
-                <input asp-for="CihazSayisi" type="text" class="form-control">
-            </div>
-            
-        </div>
-
-        <div class="row mt-3">
             <div class="col-md-4">
                 <label asp-for="AlimTarihi">Alım Tarihi:</label>
                 <input asp-for="AlimTarihi" type="date" class="form-control">
             </div>
             <div class="col-md-4">
                 <label asp-for="DestekSuresi">Destek Süresi:</label>
-                <input asp-for="DestekSuresi" type=" text" class="form-control">
+                <input asp-for="DestekSuresi" type="number" class="form-control">
             </div>
         </div>
 
         <div class="row mt-3">
             <div class="col-md-4">
-                <label asp-for="Birimi">Birimi:</label>
-                <select asp-for="Birimi" class="form-select custom-select" aria-label="Default select example">
-                    <option value="1">4. Bölge</option>
-                    <option value="2">vsvsvsvs</option>
-                </select>
+                <label asp-for="CihazSayisi">Cihaz Sayısı:</label>
+                <input asp-for="CihazSayisi" type="number" class="form-control">
+            </div>
+            <div class="col-md-8">
+                <label asp-for="BolgeId">Bölge:</label>
+                @Html.DropDownListFor(model => model.BolgeId, new SelectList(Model.BolgeList, "id", "Adi"),"Bölge seçiniz",
+                new { @class = "form-select", @id="BolgeDD",name="BolgeId"})
             </div>
         </div>
 
@@ -65,8 +62,8 @@
         </div>
 
         <div class="row mt-3">
-            <div class="col-md-12 d-flex justify-content-between">
-                <button type="button" class="btn btn-danger">Vazgeç</button>
+            <div class="col-md-12 d-flex justify-content-end">
+                <a href="/Yazilim/EkledigimYazilimlar" type="button" class="btn btn-danger">Vazgeç</a>
                 &ensp;
                 <button type="submit" class="btn btn-primary">Kaydet</button>
             </div>

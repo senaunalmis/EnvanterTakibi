@@ -94,3 +94,6 @@
     align-content: end;
 }
 
+.hidden-input{
+    visibility: hidden;
+}
