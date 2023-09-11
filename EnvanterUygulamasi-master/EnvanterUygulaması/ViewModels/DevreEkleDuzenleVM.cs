@@ -16,7 +16,7 @@ namespace EnvanterUygulaması.ViewModels
         public int BolgeId { get; set; }
         public int DevreNo { get; set; }
         public string BulutAdi { get; set; }
-        public int BulutIdd { get; set; }
+        public int BulutNo { get; set; }
         public int BulutId { get; set; }
         public string AnaDevreNo { get; set; }
         public string IpBlogu { get; set; }

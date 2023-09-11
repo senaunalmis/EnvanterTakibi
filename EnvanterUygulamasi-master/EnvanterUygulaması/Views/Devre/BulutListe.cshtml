@@ -1,0 +1,185 @@
+﻿@model List<EnvanterUygulaması.ViewModels.DevrePanelVM>
+
+<div class="mt-5 align-items-center">
+    <h3 class="text-center">Bulut Listesi</h3>
+</div>
+
+<div class="row">
+    <div class="col-4">
+        <label class="form-label">Bulut Adı:</label>
+        <input type="text" name="bulutAdi" id="bulutAdi" class="form-control" />
+        <label id="mesaj"></label>
+        <input type="hidden" name="Id" id="id" value="0" />
+        <input type="hidden" name="guncelleSatirIndeks" id="guncelleSatirIndeks" value="0" />
+    </div>
+
+    <div class="col-4">
+        <label class="form-label">Bulut ID:</label>
+        <input type="number" name="bulutId" id="bulutId" class="form-control" />
+    </div>
+
+    <div class="col-4">
+        <label class="form-label">Ana Devre No:</label>
+        <input type="number" name="anaDevreNo" id="anaDevreNo" class="form-control" />
+    </div>
+</div>
+
+<a class="btn btn-primary" href="#" id="yeniMarka_btn">Yeni Bulut Ekle</a>
+<a style="display: none;" class="btn btn-success" href="#" id="vazgecMarka_btn">Vazgeç </a>
+<a style="display: none;" class="btn btn-success" href="#" id="kaydetMarka_btn">Kaydet</a>
+<div class="mt-2 card table-responsive">
+
+    <table class="table table-striped" id="bulutTablo">
+        <thead>
+            <tr>
+                <th>İşlem</th>
+                <th>Bulut Adı</th>
+                <th>Bulut ID</th>
+                <th>Ana Devre No</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var bulut in Model)
+            {
+                <tr>
+                    <td>
+                        <a class="btn btn-primary markaGuncelle" data-id="@bulut.id" data-bulutno="@bulut.BulutNo" data-ad="@bulut.BulutAdi" data-devreno="@bulut.AnaDevreNo">Güncelle</a>
+                    </td>
+                    <td>@bulut.BulutAdi</td>
+                    <td>@bulut.BulutNo</td>
+                    <td>@bulut.AnaDevreNo</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $(document).ready(function () {
+        const bulutTablo = $('#bulutTablo').DataTable({
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/tr.json',
+            }
+        });
+
+        $(function () {
+            $("#yeniMarka_btn").click(function () {
+                var bulutAdi = $("#bulutAdi").val();
+                console.log(bulutAdi);
+                var bulutId = $("#bulutId").val();
+                console.log(bulutId);
+                var anaDevreNo = $("#anaDevreNo").val();
+                console.log(anaDevreNo);
+                if (bulutAdi == null || bulutAdi == "" || bulutId == null || bulutId == "" || anaDevreNo == null || anaDevreNo == "") {
+                    $("#mesaj").empty();
+                    $("#mesaj").append("Bütün alanları doldurunuz");
+                }
+                else {
+                    var url = "/Devre/BulutEkleDuzenle";
+                    $.ajax({
+                        url: url,
+                        type: "POST",
+                        data: {
+                            id:0,
+                            bulutNo: bulutId,
+                            bulutAdi: bulutAdi,
+                            anaDevreNo: anaDevreNo
+                        },
+                        success: function (resp) {
+                            console.log(resp.adi)
+                            if (resp != null) {
+                                if (resp.kontrol) {
+                                    var guncelleBtn = "<a class='btn btn-primary markaGuncelle' data-id='" + resp.id + "' data-ad='" + resp.bulutAdi + "' >Güncelle</a>";
+                                    bulutTablo.row.add([guncelleBtn, resp.bulutAdi, resp.bulutNo, resp.anaDevreNo]).draw(); // Tabloyu güncelle
+                                    alert("Kayıt eklendi");
+                                    $("#mesaj").empty();
+                                }
+                                else {
+                                    $("#mesaj").empty();
+                                    $("#mesaj").append(resp.mesaj);
+                                }
+
+                            }
+                        }
+                    })
+                }
+            });
+
+            //dinamik oluşabilen dom elemanlarına .click erişemeyebilir
+            //bu yüzden .on ile sabit dom elemanı üzerinden erişilir
+            $("#bulutTablo").on("click", ".markaGuncelle", function () {
+                var bulutAdi = $(this).data("ad");
+                var bulutId = $(this).data("bulutno");
+                var anaDevreNo = $(this).data("devreno");
+                var id = $(this).data("id");
+                var indeks = bulutTablo.row($(this).parents('tr')).index();
+                $("#guncelleSatirIndeks").val(indeks);
+                $("#id").val(id);
+                $("#bulutAdi").val(bulutAdi);
+                $("#bulutId").val(bulutId);
+                $("#anaDevreNo").val(anaDevreNo);
+                $("#yeniMarka_btn").hide();
+                $("#vazgecMarka_btn").show();
+                $("#kaydetMarka_btn").show();
+                $("#mesaj").empty();
+            });
+
+            $("#vazgecMarka_btn").click(function () {
+                MarkaFormResetle();
+            });
+
+            $("#kaydetMarka_btn").click(function () {
+                var id = $("#id").val();
+                var bulutAdi = $("#bulutAdi").val();
+                var bulutNo = $("#bulutId").val();
+                var anaDevreNo = $("#anaDevreNo").val();
+                if (bulutAdi == null || bulutAdi == "" || bulutNo == null || bulutNo == "" || anaDevreNo == null || anaDevreNo == "") {
+                    $("#mesaj").empty();
+                    $("#mesaj").append("Bütün alanları doldurunuz");
+                }
+                else {
+                    var url = "/Devre/BulutEkleDuzenle";
+                    $.ajax({
+                        url: url,
+                        type: "POST",
+                        data: {
+                            id: id,
+                            bulutNo: bulutNo,
+                            bulutAdi: bulutAdi,
+                            anaDevreNo: anaDevreNo
+                        },
+                        success: function (resp) {
+                            if (resp != null) {
+                                if (resp.kontrol) {
+                                    var guncelleBtn = "<a class='btn btn-primary markaGuncelle' data-id='" + resp.id + "' data-ad='" + resp.bulutAdi + "' data-bulutno='"+resp.bulutNo+"' data-devreno='"+resp.anaDevreNo+"' >Güncelle</a>";
+                                    var yeniData = [guncelleBtn, resp.bulutAdi, resp.bulutNo, resp.anaDevreNo];
+                                    var indeks = $("#guncelleSatirIndeks").val();
+
+                                    bulutTablo.row(indeks).data(yeniData).draw();
+                                    //donanimMarka_tablo.cell({ row: indeks, column: 1 }).data(data.ad).draw();
+                                    //donanimMarka_tablo.cell({ row: indeks, column: 0 }).data(guncelleBtn).draw();
+
+                                    alert("Kayıt güncellendi");
+                                    $("#mesaj").empty();
+                                    MarkaFormResetle();
+                                }
+                                else {
+                                    $("#mesaj").empty();
+                                    $("#mesaj").append(resp.mesaj);
+                                }
+                            }
+                        }
+                    } )
+                }
+            });
+        })
+        function MarkaFormResetle() {
+            $("#bulutId").val("");
+            $("#bulutAdi").val("");
+            $("#anaDevreNo").val("");
+            $("#yeniMarka_btn").show();
+            $("#vazgecMarka_btn").hide();
+            $("#kaydetMarka_btn").hide();
+        }
+    });
+</script>

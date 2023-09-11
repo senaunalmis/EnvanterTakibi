@@ -88,7 +88,10 @@ namespace EnvanterUygulaması.Migrations
             modelBuilder.Entity("EnvanterUygulaması.Models.Bulutlar", b =>
                 {
                     b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
                     b.Property<string>("Adi")
                         .IsRequired()
@@ -97,6 +100,9 @@ namespace EnvanterUygulaması.Migrations
                     b.Property<string>("AnaDevreNo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("BulutNo")
+                        .HasColumnType("int");
 
                     b.HasKey("id");
 

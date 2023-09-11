@@ -17,19 +17,24 @@ namespace EnvanterUygulaması.Controllers
         private readonly IDonanimMarkaRepository _donanimMarkaRepository;
         private readonly IDonanimTurRepository _donanimTurRepository;
         private readonly IDonanimMarkaTurRepository _donanimMarkaTurRepository;
+        private readonly IDonanimAltTurRepository _donanimAltTurRepository;
+        //private readonly IDonanimUstModelRepository _donanimUstModelRepository;
 
         public DonanimController(
             IDonanimRepository donanimRepository, 
             IListRepository listRepository, 
             IDonanimMarkaRepository donanimMarkaRepository,
             IDonanimTurRepository donanimTurRepository,
-            IDonanimMarkaTurRepository donanimMarkaTurRepository)
+            IDonanimMarkaTurRepository donanimMarkaTurRepository,
+            IDonanimAltTurRepository donanimAltTurRepository)
         {
             _listRepository = listRepository;
             _donanimRepository = donanimRepository;
             _donanimMarkaRepository = donanimMarkaRepository;
             _donanimTurRepository= donanimTurRepository;
             _donanimMarkaTurRepository= donanimMarkaTurRepository;
+            _donanimAltTurRepository = donanimAltTurRepository;
+            //_donanimUstModelRepository = donanimUstModelRepository;
         }
         
         public async Task<IActionResult> DonanimListe()
@@ -235,13 +240,15 @@ namespace EnvanterUygulaması.Controllers
         public async Task<JsonResult?> DonanimMarkaEkleDuzenle(DonanimPanelVM donanimPanelVM)
         {
             DonanimMarkalari? markaEntity;
-            if(donanimPanelVM.id == 0)
-            {
-                DonanimMarkaTurleri donanimMarkaTurleri = new DonanimMarkaTurleri() { TurId= (int)donanimPanelVM.TurId,MarkaId=donanimPanelVM.id};
-                markaEntity =new DonanimMarkalari { Adi= donanimPanelVM.Adi, Durumu="Aktif" };
-                donanimMarkaTurleri.donanimMarkalari = markaEntity;
+            DonanimMarkaTurleri donanimMarkaTurleri;
+            if (donanimPanelVM.id == 0)
+            {   
+                markaEntity = new DonanimMarkalari { Adi = donanimPanelVM.Adi, Durumu = "Aktif" };
+                donanimMarkaTurleri = new DonanimMarkaTurleri() { TurId= donanimPanelVM.TurId.Value,donanimMarkalari=markaEntity};
                 var sonuc = await _donanimMarkaTurRepository.Ekle(donanimMarkaTurleri);
-                return Json(sonuc);
+                var vm =await _donanimMarkaTurRepository.GetirInclude(markaId: sonuc.MarkaId, turId: sonuc.TurId);
+
+                return Json(new DonanimPanelVM { Adi=vm.donanimMarkalari.Adi,id=vm.MarkaId,TurAdi=vm.donanimTurleri.Adi});
             }
             else
             {
@@ -250,7 +257,9 @@ namespace EnvanterUygulaması.Controllers
                     return null;
                 markaEntity.Durumu = "Aktif";
                 markaEntity.Adi = donanimPanelVM.Adi;
-                await _donanimMarkaRepository.Guncelle(markaEntity);
+
+                //donanimMarkaTurleri= await _donanimMarkaTurRepository.GetirInclude(markaId: )
+                //await _donanimMarkaRepository.Guncelle(markaEntity);
                 return Json(markaEntity);
             }
         }
@@ -284,6 +293,44 @@ namespace EnvanterUygulaması.Controllers
                 turEntity.Adi = donanimPanelVM.Adi;
                 await _donanimTurRepository.Guncelle(turEntity);
                 return Json(turEntity);
+            }
+        }
+        public async Task<IActionResult?> DonanimAltTurListe()
+        {
+            var turler = await _donanimTurRepository.TumunuGetir();
+            var altTurler = await _donanimAltTurRepository.TumunuGetirInclude();
+            DonanimPanelVM donanimPanelVM=new DonanimPanelVM();
+            donanimPanelVM.AltTurList=altTurler.Select(x=>new Liste { id=x.id,Adi=x.Adi,TurAdi=x.donanimTurleri.Adi,TurId=x.DonanimTuruID}).ToList();
+            donanimPanelVM.TurList=turler.Select(x=>new Liste { Adi=x.Adi,id=x.id}).ToList();   
+            return View(donanimPanelVM);
+
+        }
+
+        [HttpPost]
+        public async Task<JsonResult?> DonanimAltTurEkleDuzenle(DonanimPanelVM donanimPanelVM)
+        {
+            DonanimAltTurleri? altTurEntity;
+            DonanimAltTurleri donanimAltTurleri;
+            if (donanimPanelVM.id == 0)
+            {
+                donanimAltTurleri = new DonanimAltTurleri() { Adi=donanimPanelVM.Adi, DonanimTuruID=donanimPanelVM.TurId.Value};
+
+                var sonuc = await _donanimAltTurRepository.Ekle(donanimAltTurleri);
+
+
+                return Json(new DonanimPanelVM { Adi = donanimPanelVM.Adi, id = sonuc.id });
+            }
+            else
+            {
+                altTurEntity = await _donanimAltTurRepository.Getir(donanimPanelVM.id);
+                if (altTurEntity == null)
+                    return null;
+                altTurEntity.Durumu = "Aktif";
+                altTurEntity.Adi = donanimPanelVM.Adi;
+
+                //donanimMarkaTurleri= await _donanimMarkaTurRepository.GetirInclude(markaId: )
+                //await _donanimMarkaRepository.Guncelle(markaEntity);
+                return Json(altTurEntity);
             }
         }
     }

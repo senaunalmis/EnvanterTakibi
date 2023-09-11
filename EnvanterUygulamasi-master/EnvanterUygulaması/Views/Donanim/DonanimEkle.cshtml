@@ -71,9 +71,10 @@
             <div class="col-md-4">
                 <label id="gucLabel" style="display:none;" asp-for="Guc">Gücü:</label>
                 <input id="guc" style="display:none;" type="number" class="form-control" asp-for="Guc">
-                <label id="macLabel" style="display:none;"asp-for="MacAdres">MAC Adresi:</label>
+                <label id="macLabel"  @(Model.TurId == 2 ? "" : "style=display:none;")>MAC Adresi:</label>
                 <input id="mac" pattern="[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}"
-                       style="display:none;" type="text" class="form-control" asp-for="MacAdres" data-toggle="tooltip" data-placement="top" title="Örnek: 1A:2B:3C:4D:5E:6F">
+                @(Model.TurId == 2 ? "" : "style=display:none;") type="text" class="form-control" name="MacAdres" value="@Model.MacAdres" data-toggle="tooltip"
+                data-placement="top" title="Örnek: 1A:2B:3C:4D:5E:6F">
                 <label asp-for="GarantiSuresi">Garanti Süresi:</label>
                 <input type="number" class="form-control" asp-for="GarantiSuresi" data-toggle="tooltip" data-placement="top" title="Ay şeklinde belirtiniz.">
             </div>
@@ -192,53 +193,29 @@
             console.log(selectedDonanimTuru);
 
             switch (selectedDonanimTuru) {
-                case '2':
+                case '2': //Switch için gerekli inputlar
                     $("#poe").show();
                     $("#poeLabel").show();
                     $("#altTurLabel").hide();
                     $("#altTurDD").hide();
-                    $("#tipLabel").hide();
-                    $("#tip").hide();
                     $("#mac").show();
                     $("#macLabel").show();
                     break;
-                case '3':
+                case '3': //Router için gerekli inputlar
+                case '4': //IP Phone için gerekli inputlar
+                case '6': //Access Point için gerekli inputlar
                     $("#poe").hide();
                     $("#poeLabel").hide();
                     $("#altTurLabel").hide();
                     $("#altTurDD").hide();
-                    $("#tipLabel").hide();
-                    $("#tip").hide();
                     $("#mac").show();
                     $("#macLabel").show();
                     break;
-                case '4':
-                    $("#poe").hide();
-                    $("#poeLabel").hide();
-                    $("#altTurLabel").hide();
-                    $("#altTurDD").hide();
-                    $("#tipLabel").hide();
-                    $("#tip").hide();
-                    $("#mac").show();
-                    $("#macLabel").show();
-                    break;
-                case '5':
+                case '5': //Modül için gerekli inputlar
                     $("#poe").hide();
                     $("#poeLabel").hide();
                     $("#altTurLabel").show();
                     $("#altTurDD").show();
-                    $("#tipLabel").hide();
-                    $("#tip").hide();
-                    $("#mac").show();
-                    $("#macLabel").show();
-                    break;
-                case '6':
-                    $("#poe").hide();
-                    $("#poeLabel").hide();
-                    $("#altTurLabel").hide();
-                    $("#altTurDD").hide();
-                    $("#tipLabel").hide();
-                    $("#tip").hide();
                     $("#mac").show();
                     $("#macLabel").show();
                     break;
@@ -250,7 +227,7 @@
             var selectedAltTur = $(this).val();
 
             switch (selectedAltTur) {
-                case '1':
+                case '1': // Şase Modüller için gerekli inputlar
                 case '2':
                 case '3':
                     $("#mac").show();
@@ -262,7 +239,7 @@
                     $("#mod").hide();
                     $("#modLabel").hide();
                     break;
-                case '5':
+                case '5': //Power Modül için gerekli inputlar
                     $("#mac").hide();
                     $("#macLabel").hide();
                     $("#guc").show();
@@ -272,7 +249,7 @@
                     $("#bHiz").hide();
                     $("#bHizLabel").hide();
                     break;
-                case '6':
+                case '6': // Fiber Modül için gerekli inputlar
                     $("#mac").hide();
                     $("#macLabel").hide();
                     $("#bHiz").show();
@@ -282,7 +259,7 @@
                     $("#guc").hide();
                     $("#gucLabel").hide();
                     break;
-                case '8':
+                case '8': // Stack modül için gerekli inputlar
                     $("#mac").hide();
                     $("#macLabel").hide();
                     $("#bHiz").hide();
@@ -292,7 +269,7 @@
                     $("#guc").hide();
                     $("#gucLabel").hide();
                     break;
-                case '9':
+                case '9': //SFP Modül için gerekli inputlar
                     $("#mac").hide();
                     $("#macLabel").hide();
                     $("#bHiz").show();

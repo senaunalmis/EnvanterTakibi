@@ -37,7 +37,7 @@ namespace EnvanterUygulaması.Repositories.Concrete
             _entity.Update(entity);
             await _context.SaveChangesAsync();
         }
-        public async Task<TEntity?> Getir(int id)
+        public  async Task<TEntity?> Getir(int id)
         {
             return await _entity.FindAsync(id);
         }

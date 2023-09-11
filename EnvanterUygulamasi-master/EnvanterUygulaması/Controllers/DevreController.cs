@@ -4,18 +4,23 @@ using EnvanterUygulaması.Repositories.Concrete;
 using EnvanterUygulaması.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 
 namespace EnvanterUygulaması.Controllers
 {
     public class DevreController : Controller
     {
+        private readonly IBulutRepository _bulutRepository;
         private readonly IDevreRepository _devreRepository;
         private readonly IListRepository _listRepository;
-        public DevreController(IDevreRepository devreRepository, IListRepository listRepository)
+        public DevreController(IDevreRepository devreRepository, 
+            IListRepository listRepository,
+            IBulutRepository bulutRepository)
         {
             _devreRepository = devreRepository;
             _listRepository = listRepository;
+            _bulutRepository = bulutRepository;
         }
 
         public async Task<IActionResult> DevreListe()
@@ -28,12 +33,12 @@ namespace EnvanterUygulaması.Controllers
                 AnaDevreNo = x.bulutlar.AnaDevreNo,
                 BulutAdi = x.bulutlar.Adi,
                 Bolge = x.bolgeler.Adi,
-                BulutID = x.BulutID,
+                BulutNo = x.bulutlar.BulutNo,
                 Durumu = x.Durumu,
                 EkleyenKullanici = x.kullanicilar.Adi,
                 IpBlogu = x.IpBlogu,
                 Koordinati = x.Koordinat,
-                Mahsup = x.Mahsup,
+                Mahsup = x.Mahsup?"Var":"Yok",
                 Nosu = x.No,
                 id = x.id
             }).ToList();
@@ -62,7 +67,8 @@ namespace EnvanterUygulaması.Controllers
                     AnaDevreNo = devre.bulutlar.AnaDevreNo,
                     BulutAdi = devre.bulutlar.Adi,
                     BolgeId = devre.BolgeId,
-                    BulutId = devre.BulutID,
+                    BulutNo = devre.bulutlar.BulutNo,
+                    BulutId= devre.BulutID,
                     DevreNo = devre.No,
                     Durum = devre.Durumu,
                     Koordinat = devre.Koordinat,
@@ -140,17 +146,126 @@ namespace EnvanterUygulaması.Controllers
                 AnaDevreNo = x.bulutlar.AnaDevreNo,
                 BulutAdi = x.bulutlar.Adi,
                 Bolge = x.bolgeler.Adi,
-                BulutID = x.BulutID,
+                BulutNo = x.bulutlar.BulutNo,
                 Durumu = x.Durumu,
                 EkleyenKullanici = x.kullanicilar.Adi,
                 IpBlogu = x.IpBlogu,
                 Koordinati = x.Koordinat,
-                Mahsup = x.Mahsup,
+                Mahsup = x.Mahsup?"Var":"Yok",
                 Nosu = x.No,
                 id = x.id
             }).ToList();
 
             return View(devreListe);
+        }
+
+        public async Task<IActionResult> BulutListe()
+        {
+            var bulutlar = await _bulutRepository.TumunuGetir();
+            List<DevrePanelVM> bulutListVM = bulutlar.Select(x => new DevrePanelVM()
+            {
+                id = x.id,
+                AnaDevreNo=x.AnaDevreNo,
+                BulutAdi=x.Adi,
+                BulutNo=x.BulutNo
+            }).ToList();
+            return View(bulutListVM);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult?> BulutEkleDuzenle( DevrePanelVM devrePanelVM)
+        {
+            string mesaj = "";
+            Bulutlar? bulutEntity;
+            if (devrePanelVM.id==0)
+            {
+                mesaj = await _bulutRepository.BulutKontrolMesaji(devrePanelVM.BulutNo, devrePanelVM.BulutAdi, devrePanelVM.AnaDevreNo);
+                if (string.IsNullOrEmpty(mesaj))
+                {
+                    bulutEntity = new Bulutlar
+                    {
+                        Adi = devrePanelVM.BulutAdi,
+                        AnaDevreNo = devrePanelVM.AnaDevreNo,
+                        BulutNo = devrePanelVM.BulutNo
+                    };
+                    var sonuc = await _bulutRepository.Ekle(bulutEntity);
+                    devrePanelVM.Kontrol = true;
+                    return Json(devrePanelVM);
+                }
+                else
+                {
+                    devrePanelVM.Kontrol = false;
+                    devrePanelVM.Mesaj = mesaj;
+                    return Json(devrePanelVM);
+                }
+            }
+            else {
+                bulutEntity = await _bulutRepository.Getir(devrePanelVM.id);
+                if (bulutEntity.BulutNo != devrePanelVM.BulutNo) // Aynı bulut id'sine sahip kayıt var mı?
+                {
+                    mesaj= await _bulutRepository.BulutNoKontrolMesaji(devrePanelVM.BulutNo);
+                    if (string.IsNullOrEmpty(mesaj))
+                    {
+                        bulutEntity.BulutNo= devrePanelVM.BulutNo;
+                        devrePanelVM.Kontrol = true;
+                        await _bulutRepository.Guncelle(bulutEntity);
+                    }
+                    else
+                    {
+                        devrePanelVM.Kontrol = false;
+                        devrePanelVM.Mesaj = mesaj;
+                    }
+                }
+                if(!bulutEntity.Adi.Equals(devrePanelVM.BulutAdi))// Aynı bulut adına sahip kayıt var mı?
+                {
+                    mesaj += await _bulutRepository.BulutAdiKontrolMesaji(devrePanelVM.BulutAdi);
+                    if (string.IsNullOrEmpty(mesaj))
+                    {
+                        bulutEntity.Adi = devrePanelVM.BulutAdi;
+                        devrePanelVM.Kontrol = true;
+                        await _bulutRepository.Guncelle(bulutEntity);
+                    }
+                    else
+                    {
+                        devrePanelVM.Kontrol = false;
+                        devrePanelVM.Mesaj = mesaj;
+                        
+                    }
+                }
+                if (!bulutEntity.AnaDevreNo.Equals(devrePanelVM.AnaDevreNo))// Aynı ana devre no'suna sahip kayıt var mı?
+                {
+                    mesaj += await _bulutRepository.AnaDevreNoKontrolMesaji(devrePanelVM.AnaDevreNo);
+                    if (string.IsNullOrEmpty(mesaj))
+                    {
+                        bulutEntity.AnaDevreNo = devrePanelVM.AnaDevreNo;
+                        devrePanelVM.Kontrol = true;
+                        await _bulutRepository.Guncelle(bulutEntity);
+                    }
+                    else
+                    {
+                        devrePanelVM.Kontrol = false;
+                        devrePanelVM.Mesaj = mesaj;
+                    }
+                }
+                return Json(devrePanelVM);
+                //if (string.IsNullOrEmpty(mesaj))
+                //{
+                //    bulutEntity = await _bulutRepository.Getir(devrePanelVM.id);
+                //    if (bulutEntity == null)
+                //        return null;
+                //    bulutEntity.BulutNo = devrePanelVM.BulutNo;
+                //    bulutEntity.Adi = devrePanelVM.BulutAdi;
+                //    bulutEntity.AnaDevreNo = devrePanelVM.AnaDevreNo;
+                //    await _bulutRepository.Guncelle(bulutEntity);
+                //    return Json(devrePanelVM);
+                //}
+                //else
+                //{
+                //    devrePanelVM.Kontrol = false;
+                //    devrePanelVM.Mesaj = mesaj;
+                //    return Json(devrePanelVM);
+                //}
+            }
         }
         public IActionResult Index()
         {

@@ -93,7 +93,6 @@ namespace EnvanterUygulaması.Context
                 .WithMany(dt => dt.donanimAltTurleri)
                 .HasForeignKey(dat => dat.DonanimTuruID);
 
-
             modelBuilder.Entity<Yazilimlar>()
                 .HasOne(y => y.kullanicilar)
                 .WithMany(k => k.yazilimlar)
@@ -122,10 +121,6 @@ namespace EnvanterUygulaması.Context
                 .HasOne(mt => mt.donanimTurleri)
                 .WithMany(dt => dt.donanimMarkaTurleri)
                 .HasForeignKey(mt => mt.TurId);
-
-            modelBuilder.Entity<Bulutlar>()
-                .Property(b => b.id) 
-                .ValueGeneratedNever(); 
 
             modelBuilder.Entity<Donanimlar>()
                 .HasOne(d=>d.bolgeler)

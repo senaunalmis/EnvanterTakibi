@@ -26,12 +26,27 @@ namespace EnvanterUygulaması.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Bolgeler",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Adi = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Bolgeler", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Bulutlar",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false),
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Adi = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AnaDevreNo = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    AnaDevreNo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BulutNo = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -45,8 +60,7 @@ namespace EnvanterUygulaması.Migrations
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Adi = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Durumu = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TurID = table.Column<int>(type: "int", nullable: false)
+                    Durumu = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -196,7 +210,7 @@ namespace EnvanterUygulaması.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Adi = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     No = table.Column<int>(type: "int", nullable: false),
-                    Bolge = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BolgeId = table.Column<int>(type: "int", nullable: false),
                     BulutID = table.Column<int>(type: "int", nullable: false),
                     IpBlogu = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Durumu = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -208,6 +222,12 @@ namespace EnvanterUygulaması.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Devreler", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_Devreler_Bolgeler_BolgeId",
+                        column: x => x.BolgeId,
+                        principalTable: "Bolgeler",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Devreler_Bulutlar_BulutID",
                         column: x => x.BulutID,
@@ -260,12 +280,18 @@ namespace EnvanterUygulaması.Migrations
                     AlimTarihi = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DestekSuresi = table.Column<int>(type: "int", nullable: false),
                     Aciklama = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Birim = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BolgeId = table.Column<int>(type: "int", nullable: false),
                     EkleyenID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Yazilimlar", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_Yazilimlar_Bolgeler_BolgeId",
+                        column: x => x.BolgeId,
+                        principalTable: "Bolgeler",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Yazilimlar_Kullanicilar_EkleyenID",
                         column: x => x.EkleyenID,
@@ -320,9 +346,8 @@ namespace EnvanterUygulaması.Migrations
                     Poe = table.Column<bool>(type: "bit", nullable: false),
                     BaglantiHizi = table.Column<int>(type: "int", nullable: true),
                     Modu = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Tipi = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Gucu = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Birim = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BolgeId = table.Column<int>(type: "int", nullable: false),
                     Aciklama = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     EkleyenID = table.Column<int>(type: "int", nullable: false)
                 },
@@ -335,6 +360,12 @@ namespace EnvanterUygulaması.Migrations
                         principalTable: "AltModeller",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Donanimlar_Bolgeler_BolgeId",
+                        column: x => x.BolgeId,
+                        principalTable: "Bolgeler",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Donanimlar_DonanimAltTurleri_DonanimAltTuruID",
                         column: x => x.DonanimAltTuruID,
@@ -372,6 +403,11 @@ namespace EnvanterUygulaması.Migrations
                 column: "UstModelID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Devreler_BolgeId",
+                table: "Devreler",
+                column: "BolgeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Devreler_BulutID",
                 table: "Devreler",
                 column: "BulutID");
@@ -390,6 +426,11 @@ namespace EnvanterUygulaması.Migrations
                 name: "IX_Donanimlar_AltModelID",
                 table: "Donanimlar",
                 column: "AltModelID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Donanimlar_BolgeId",
+                table: "Donanimlar",
+                column: "BolgeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Donanimlar_DonanimAltTuruID",
@@ -430,6 +471,11 @@ namespace EnvanterUygulaması.Migrations
                 name: "IX_UstModeller_DonanimMarkaId",
                 table: "UstModeller",
                 column: "DonanimMarkaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Yazilimlar_BolgeId",
+                table: "Yazilimlar",
+                column: "BolgeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Yazilimlar_EkleyenID",
@@ -477,6 +523,9 @@ namespace EnvanterUygulaması.Migrations
 
             migrationBuilder.DropTable(
                 name: "Roller");
+
+            migrationBuilder.DropTable(
+                name: "Bolgeler");
 
             migrationBuilder.DropTable(
                 name: "Kullanicilar");

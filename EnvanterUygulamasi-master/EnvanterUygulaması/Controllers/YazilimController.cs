@@ -10,11 +10,11 @@ namespace EnvanterUygulaması.Controllers
     public class YazilimController : Controller
     {
         private readonly IYazilimRepository _yazilimRepository;
-        private readonly IListRepository _listRepository;
         private readonly IYazilimMarkaRepository _yazilimMarkaRepository;
+        private readonly IListRepository _listRepository;
 
-        public YazilimController(IYazilimRepository yazilimRepository,
-            IListRepository listRepository, 
+        public YazilimController(IYazilimRepository yazilimRepository, 
+            IListRepository listRepository,
             IYazilimMarkaRepository yazilimMarkaRepository)
         {
             _yazilimRepository = yazilimRepository;
@@ -148,19 +148,14 @@ namespace EnvanterUygulaması.Controllers
             }).ToList();
             return View(yazilimListesi);
         }
-        public IActionResult Index()
-        {
-            return View();
-        }
-
         public async Task<IActionResult> YazilimMarkaListe()
         {
             YazilimPanelVM yazilimPanelVM = new YazilimPanelVM();
             var markalar = await _yazilimMarkaRepository.TumunuGetir();
             List<Liste> liste = markalar.Select(x => new Liste()
             {
-                id=x.id,
-                Adi=x.Adi,
+                id = x.id,
+                Adi = x.Adi,
 
             }).ToList();
 
@@ -173,7 +168,7 @@ namespace EnvanterUygulaması.Controllers
             YazilimMarkalari? markaEntity;
             if (yazilimPanelVM.id == 0)
             {
-                markaEntity = new YazilimMarkalari { Adi=yazilimPanelVM.Adi, Durumu="Aktif"};
+                markaEntity = new YazilimMarkalari { Adi = yazilimPanelVM.Adi, Durumu = "Aktif" };
                 var sonuc = await _yazilimMarkaRepository.Ekle(markaEntity);
                 return Json(sonuc);
             }

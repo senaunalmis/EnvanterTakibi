@@ -8,7 +8,7 @@ namespace EnvanterUygulaması.Models
         public int id { get; set; }
         public int DonanimTuruID { get; set; }
         public string Adi { get; set; }
-        public string Durumu { get; set; }
+        public string Durumu { get; set; } = "Pasif";
         public DonanimTurleri donanimTurleri { get; set; }
         public  ICollection<Donanimlar> donanimlar { get; } = new List<Donanimlar>();
     }

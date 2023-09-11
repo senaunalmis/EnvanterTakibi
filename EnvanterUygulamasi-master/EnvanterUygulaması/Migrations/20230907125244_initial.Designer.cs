@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EnvanterUygulaması.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230905064434_TableUpdate")]
-    partial class TableUpdate
+    [Migration("20230907125244_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -91,13 +91,20 @@ namespace EnvanterUygulaması.Migrations
             modelBuilder.Entity("EnvanterUygulaması.Models.Bulutlar", b =>
                 {
                     b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
                     b.Property<string>("Adi")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("AnaDevreNo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BulutNo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -300,9 +307,6 @@ namespace EnvanterUygulaması.Migrations
 
                     b.Property<string>("SeriNo")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Tipi")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UstModelID")

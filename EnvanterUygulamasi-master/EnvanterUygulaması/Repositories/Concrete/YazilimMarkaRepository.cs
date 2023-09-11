@@ -18,7 +18,7 @@ namespace EnvanterUygulaması.Repositories.Concrete
         {
             var markaList = await _dataContext.YazilimMarkalari
                 .Include(d => d.Adi)
-                
+
                 .ToListAsync();
 
             return markaList;

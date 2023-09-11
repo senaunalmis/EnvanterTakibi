@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "CUngFCm05rP5WhFuNhIIcnUcY83eWUNP8dYlvlCjrtU=",
+  "Hash": "67pXkVgcsIRaMJjZfEJBBuAzpNZwNK4h9BEqHO6x5hI=",
   "Source": "EnvanterUygulaması",
   "BasePath": "_content/EnvanterUygulaması",
   "Mode": "Default",
@@ -66,6 +66,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\donanim.css"
+    },
+    {
+      "Identity": "C:\\Users\\unalmis.sena\\Downloads\\EnvanterUygulamasi-master\\EnvanterUygulaması\\wwwroot\\css\\login.css",
+      "SourceId": "EnvanterUygulaması",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\unalmis.sena\\Downloads\\EnvanterUygulamasi-master\\EnvanterUygulaması\\wwwroot\\",
+      "BasePath": "_content/EnvanterUygulaması",
+      "RelativePath": "css/login.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\login.css"
     },
     {
       "Identity": "C:\\Users\\unalmis.sena\\Downloads\\EnvanterUygulamasi-master\\EnvanterUygulaması\\wwwroot\\css\\site.css",

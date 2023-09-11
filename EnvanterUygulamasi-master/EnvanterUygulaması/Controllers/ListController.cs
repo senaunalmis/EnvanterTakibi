@@ -22,11 +22,11 @@ namespace EnvanterUygulaması.Controllers
             var bulut = await _listRepository.BulutOzellikleriGetir(BulutId);
             if (bulut != null)
             {
-                return Json(new { bulutId = bulut.id, anaDevreNo = bulut.AnaDevreNo });
+                return Json(new { bulutNo = bulut.BulutNo, anaDevreNo = bulut.AnaDevreNo });
             }
             else
             {
-                return Json(new { BulutId = "", AnaDevreNo = "" });
+                return Json(new { bulutNo = "", anaDevreNo = "" });
             }
         }
         public async Task<JsonResult> AltTurGetir(int TurId)

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EnvanterUygulaması.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230905055307_BolgelerTablosu_Eklendi")]
-    partial class BolgelerTablosu_Eklendi
+    [Migration("20230907131617_up2")]
+    partial class up2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -91,7 +91,10 @@ namespace EnvanterUygulaması.Migrations
             modelBuilder.Entity("EnvanterUygulaması.Models.Bulutlar", b =>
                 {
                     b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
                     b.Property<string>("Adi")
                         .IsRequired()
@@ -100,6 +103,9 @@ namespace EnvanterUygulaması.Migrations
                     b.Property<string>("AnaDevreNo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("BulutNo")
+                        .HasColumnType("int");
 
                     b.HasKey("id");
 
@@ -217,9 +223,6 @@ namespace EnvanterUygulaması.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TurID")
-                        .HasColumnType("int");
-
                     b.HasKey("id");
 
                     b.ToTable("DonanimMarkalari");
@@ -303,9 +306,6 @@ namespace EnvanterUygulaması.Migrations
 
                     b.Property<string>("SeriNo")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Tipi")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UstModelID")
