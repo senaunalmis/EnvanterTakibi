@@ -3,8 +3,10 @@
     "",
     "\\EnvanterUygulaması",
     "\\EnvanterUygulaması\\Controllers",
-    "\\EnvanterUygulaması\\ViewModels"
+    "\\EnvanterUygulaması\\ViewModels",
+    "\\EnvanterUygulaması\\Views",
+    "\\EnvanterUygulaması\\Views\\Donanim"
   ],
-  "SelectedNode": "\\EnvanterUygulaması\\ViewModels\\DevreEkleDuzenleVM.cs",
+  "SelectedNode": "\\EnvanterUygulaması\\Views\\Donanim\\DonanimMarkaListe.cshtml",
   "PreviewInSolutionExplorer": false
 }

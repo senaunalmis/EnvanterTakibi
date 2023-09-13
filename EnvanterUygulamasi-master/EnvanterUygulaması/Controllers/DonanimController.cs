@@ -18,7 +18,11 @@ namespace EnvanterUygulaması.Controllers
         private readonly IDonanimTurRepository _donanimTurRepository;
         private readonly IDonanimMarkaTurRepository _donanimMarkaTurRepository;
         private readonly IDonanimAltTurRepository _donanimAltTurRepository;
-        //private readonly IDonanimUstModelRepository _donanimUstModelRepository;
+        private readonly IDonanimUstModelRepository _donanimUstModelRepository;
+        private readonly IDonanimAltModelRepository _donanimAltModelRepository;
+
+
+
 
         public DonanimController(
             IDonanimRepository donanimRepository, 
@@ -26,7 +30,10 @@ namespace EnvanterUygulaması.Controllers
             IDonanimMarkaRepository donanimMarkaRepository,
             IDonanimTurRepository donanimTurRepository,
             IDonanimMarkaTurRepository donanimMarkaTurRepository,
-            IDonanimAltTurRepository donanimAltTurRepository)
+            IDonanimAltTurRepository donanimAltTurRepository,
+            IDonanimUstModelRepository  donanimUstModelRepository,
+            IDonanimAltModelRepository  donanimAltModelRepository
+            )
         {
             _listRepository = listRepository;
             _donanimRepository = donanimRepository;
@@ -34,7 +41,11 @@ namespace EnvanterUygulaması.Controllers
             _donanimTurRepository= donanimTurRepository;
             _donanimMarkaTurRepository= donanimMarkaTurRepository;
             _donanimAltTurRepository = donanimAltTurRepository;
-            //_donanimUstModelRepository = donanimUstModelRepository;
+            _donanimUstModelRepository = donanimUstModelRepository;
+            _donanimAltModelRepository = donanimAltModelRepository;
+            
+
+
         }
         
         public async Task<IActionResult> DonanimListe()
@@ -333,5 +344,85 @@ namespace EnvanterUygulaması.Controllers
                 return Json(altTurEntity);
             }
         }
+
+        public async Task<IActionResult?> DonanimUstModelListe()
+        {
+            var modeller = await _donanimMarkaRepository.TumunuGetir();
+            var ustModeller = await _donanimUstModelRepository.TumunuGetirInclude();
+            DonanimPanelVM donanimPanelVM = new DonanimPanelVM();
+            donanimPanelVM.UstModelList = ustModeller.Select(x => new Liste { id = x.id, Adi = x.Adi, MarkaAdi = x.Adi, MarkaId = x.DonanimMarkaId }).ToList();
+            donanimPanelVM.MarkaList = modeller.Select(x => new Liste { Adi = x.Adi, id = x.id }).ToList();
+            return View(donanimPanelVM);
+
+        }
+
+        [HttpPost]
+        public async Task<JsonResult?> DonanimUstModelEkleDuzenle(DonanimPanelVM donanimPanelVM)
+        {
+            UstModeller? ustModelEntity;
+            UstModeller ustModelMarkalari;
+            if (donanimPanelVM.id == 0)
+            {
+                ustModelMarkalari = new UstModeller() { Adi = donanimPanelVM.Adi, DonanimMarkaId = donanimPanelVM.MarkaId.Value };
+
+                var sonuc = await _donanimUstModelRepository.Ekle(ustModelMarkalari);
+
+
+                return Json(new DonanimPanelVM { Adi = donanimPanelVM.Adi, id = sonuc.id });
+            }
+            else
+            {
+                ustModelEntity = await _donanimUstModelRepository.Getir(donanimPanelVM.id);
+                if (ustModelEntity == null)
+                    return null;
+
+                ustModelEntity.Adi = donanimPanelVM.Adi;
+
+                //donanimMarkaTurleri= await _donanimMarkaTurRepository.GetirInclude(markaId: )
+                //await _donanimMarkaRepository.Guncelle(markaEntity);
+                return Json(ustModelEntity);
+            }
+        }
+
+        public async Task<IActionResult?> DonanimAltModelListe()
+        {
+            var modeller = await _donanimUstModelRepository.TumunuGetir();
+            var altModeller = await _donanimAltModelRepository.TumunuGetirInclude();
+            DonanimPanelVM donanimPanelVM = new DonanimPanelVM();
+            donanimPanelVM.AltModelList = altModeller.Select(x => new Liste { id = x.id, Adi = x.Adi, UstModelAdi = x.Adi, UstModelId = x.UstModelID }).ToList();
+            donanimPanelVM.UstModelList = modeller.Select(x => new Liste { Adi = x.Adi, id = x.id }).ToList();
+            return View(donanimPanelVM);
+
+        }
+
+        [HttpPost]
+        public async Task<JsonResult?> DonanimAltModelEkleDuzenle(DonanimPanelVM donanimPanelVM)
+        {
+            AltModeller? altModelEntity;
+            AltModeller altModelUstModeli;
+            if (donanimPanelVM.id == 0)
+            {
+                altModelUstModeli = new AltModeller() { Adi = donanimPanelVM.Adi, UstModelID = donanimPanelVM.UstModelId.Value };
+
+                var sonuc = await _donanimAltModelRepository.Ekle(altModelUstModeli);
+
+
+                return Json(new DonanimPanelVM { Adi = donanimPanelVM.Adi, id = sonuc.id });
+            }
+            else
+            {
+                altModelEntity = await _donanimAltModelRepository.Getir(donanimPanelVM.id);
+                if (altModelEntity == null)
+                    return null;
+
+                altModelEntity.Adi = donanimPanelVM.Adi;
+
+                //donanimMarkaTurleri= await _donanimMarkaTurRepository.GetirInclude(markaId: )
+                //await _donanimMarkaRepository.Guncelle(markaEntity);
+                return Json(altModelEntity);
+            }
+        }
+
+
     }
 }

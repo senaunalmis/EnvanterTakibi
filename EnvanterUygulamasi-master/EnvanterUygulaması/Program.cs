@@ -18,6 +18,10 @@ builder.Services.AddTransient<IDevreRepository, DevreRepository>();
 builder.Services.AddTransient<IBulutRepository, BulutRepository>();
 builder.Services.AddTransient<IListRepository, ListRepository>();
 builder.Services.AddTransient<IDonanimAltTurRepository, DonanimAltTurRepository>();
+builder.Services.AddTransient<IDonanimUstModelRepository, DonanimUstModelRepository>();
+builder.Services.AddTransient<IDonanimAltModelRepository, DonanimAltModelRepository>();
+
+
 
 // DbContext yapýlandýrmasýný ekle
 builder.Services.AddDbContext<DataContext>(options =>

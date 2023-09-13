@@ -1,0 +1,172 @@
+﻿@model EnvanterUygulaması.ViewModels.DonanimPanelVM
+
+<div class="mt-5 align-items-center">
+    <h3 class="text-center">Donanım Alt Model Listesi</h3>
+</div>
+
+<div class="row">
+    <div class="col-6">
+        <label class="form-label">Ad</label>
+        <input type="text" name="@Model.Adi" id="ad" class="form-control" />
+        <label id="mesaj"></label>
+        <input type="hidden" name="@Model.id" id="id" value="0" />
+        <input type="hidden" name="guncelleSatirIndeks" id="guncelleSatirIndeks" value="0" />
+    </div>
+
+    <div class="col-6">
+        <label asp-for="UstModelId" class="form-label"> Üst Model:</label>
+        @Html.DropDownListFor(model => model.UstModelId, new SelectList(Model.UstModelList,"id","Adi"),"Üst Model Seçiniz",
+        new{ @class="form-select", @id="ustModelDD"})
+    </div>
+</div>
+<a class="btn btn-primary" href="#" id="yeniAltModel_btn">Yeni Alt Model Ekle</a>
+<a style="display: none;" class="btn btn-success" href="#" id="vazgecAltModel_btn">Vazgeç </a>
+<a style="display: none;" class="btn btn-success" href="#" id="kaydetAltModel_btn">Kaydet</a>
+
+<div class="mt-2 card table-responsive">
+
+    <table class="table table-striped" id="donanimAltModelTablo">
+        <thead>
+            <tr>
+                <th>İşlem</th>
+                <th>Alt Model Adı</th>
+                <th>Üst Modeli</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var altModel in Model.AltModelList)
+            {
+                <tr>
+                    <td>
+                        <a class="btn btn-primary  ustModelGuncelle" data-id="@altModel.id" data-ad="@altModel.Adi">Güncelle</a>
+                    </td>
+                    <td>@altModel.Adi</td>
+                    <td>@altModel.UstModelAdi</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $(document).ready(function () {
+        const donanimAltModelTablo = $('#donanimAltModelTablo').DataTable({
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/tr.json',
+            }
+        });
+
+        $(function () {
+            // var kullanici_tablo = $('#kullaniciTablo').DataTable();
+            //const donanimMarkaTablo = new DataTable('#donanimMarkaTablo');
+
+            $("#yeniAltModel_btn").click(function () {
+                var ad = $("#ad").val();
+                var ustModel = $("#ustModelDD").val();
+                var ustModel = $("#ustModelDD option:selected").text();
+
+                if (ad == null || ad == "") {
+                    $("#mesaj").empty();
+                    $("#mesaj").append("Alt Model adı giriniz");
+                }
+                else if (ustModel == null || ustModel == "") {
+                    $("#mesaj").empty();
+                    $("#mesaj").append("Üst Model seçiniz");
+
+                }
+                else {
+                    var url = "/Donanim/DonanimAltModelEkleDuzenle";
+                    $.ajax({
+                        url: url,
+                        type: "POST",
+                        data: {
+                            id: 0,
+                            adi: ad,
+                            ustModelId: ustModelId,
+                        },
+                        success: function (data) {
+                            if (data != null) {
+                                var guncelleBtn = "<a class='btn btn-primary altModelGuncelle' data-id='" + data.id + "' data-ad='" + data.adi + "' data-ustModelId='" + data.adi + "' >Güncelle</a>";
+                                donanimAltModelTablo.row.add([guncelleBtn, data.adi, ustModelAdi]).draw(); // Tabloyu güncelle
+                                alert("Kayıt eklendi");
+                                $("#mesaj").empty();
+                            }
+                        }
+                    })
+                }
+            });
+
+            //dinamik oluşabilen dom elemanlarına .click erişemeyebilir
+            //bu yüzden .on ile sabit dom elemanı üzerinden erişilir
+            $("#donanimAltModelTablo").on("click", ".altModelGuncelle", function () {
+                var ustModelId = $(this).data("id");
+                var ustModelAdi = $(this).data("ad");
+                var indeks = donanimAltModelTablo.row($(this).parents('tr')).index();
+                $("#guncelleSatirIndeks").val(indeks);
+                $("#id").val(turId);
+                $("#ad").val(turAdi);
+                $("#yeniAltModel_btn").hide();
+                $("#vazgecAltModel_btn").show();
+                $("#kaydetAltModel_btn").show();
+                $("#mesaj").empty();
+            });
+
+            $("#vazgecAltModel_btn").click(function () {
+                AlturFormResetle();
+            });
+
+            $("#kaydetAltModel_btn").click(function () {
+                var AltModelId = $("#id").val();
+                var AltModelAd = $("#ad").val();
+
+                if (AltModelAd == null || AltModelAd == "") {
+                    $("#mesaj").empty();
+                    $("#mesaj").append("Alt Model giriniz");
+                }
+                else if (ustModelId == null || ustModelId == "") {
+                    $("#mesaj").empty();
+                    $("#mesaj").append("Üst Model seçiniz");
+                }
+                else {
+                    var url = "/Donanim/DonanimAltModelEkleDuzenle";
+                    $.ajax({
+                        url: url,
+                        type: "POST",
+                        data: {
+                            id: AltModelId,
+                            adi: AltModelAd,
+                            ustModelId: ustModelId
+                        },
+                        success: function (data) {
+
+                            console.log(data.adi)
+                            if (data != null) {
+                                var guncelleBtn = "<a class='btn btn-primary altModelGuncelle' data-id='" + data.id + "' data-ad='" + data.adi + "' >Güncelle</a>";
+                                var yeniData = [guncelleBtn, data.adi]
+                                var indeks = $("#guncelleSatirIndeks").val();
+
+                                donanimAltModelTablo.row(indeks).data(yeniData).draw();
+                                //donanimMarka_tablo.cell({ row: indeks, column: 1 }).data(data.ad).draw();
+                                //donanimMarka_tablo.cell({ row: indeks, column: 0 }).data(guncelleBtn).draw();
+
+                                alert("Kayıt güncellendi");
+                                $("#mesaj").empty();
+                            }
+                        }
+                    })
+
+                    AltModelFormResetle();
+                }
+
+            });
+        })
+
+        function AltModelFormResetle() {
+            $("#id").val("");
+            $("#ad").val("");
+            $("#yeniAltModel_btn").show();
+            $("#vazgecAltModel_btn").hide();
+            $("#kaydetAltModel_btn").hide();
+        }
+    });
+</script>	
