@@ -14,6 +14,12 @@ namespace EnvanterUygulaması.ViewModels
         public string Adi { get; set; }
         public int? TurId { get; set; }
         public string? TurAdi { get; set; }
+
+
+        public string? TurAdlari { get; set; }
+        public string? TurIdler { get; set; }
+
+        public int str { get; set; }
         public int? AltTurId { get; set; }
         public int? MarkaId { get; set; }
         public int? UstModelId { get; set; }

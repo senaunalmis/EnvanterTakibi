@@ -9,5 +9,6 @@ namespace EnvanterUygulaması.Models
         public Kullanicilar kullanicilar { get; set; }
         public int RolID { get; set; }
         public Roller roller { get; set; }
+        public DateTime EklemeTarihi { get; set; }
     }
 }

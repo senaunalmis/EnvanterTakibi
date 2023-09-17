@@ -6,6 +6,7 @@ namespace EnvanterUygulaması.Models
     public class Roller
     {
         public int id { get; set; }
+        public string Ad { get; set; }
         public string Yetkisi { get; set; }
         public ICollection<KullaniciRolleri> kullaniciRolleri { get; set; }
 

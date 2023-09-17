@@ -1,0 +1,54 @@
+﻿@using EnvanterUygulaması.ViewModels;
+@model LoginVM;
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="~/css/login.css">
+        <!------ Include the above in your HEAD tag ---------->
+    </head>
+
+    <body>
+        <div class="simple-login-container">
+            <div class="row d-flex">
+            <img src="~/images/logo.png" width="100px" height="100px" class="mx-auto d-block">
+            </div>
+            <div class="row text-center mt-3">
+                <h3>Envanter Yönetim Uygulaması</h3>
+            </div>
+
+            <form asp-action="Login" asp-controller="Security" method="post">
+            <!-- Email input -->
+                <div class="row mt-3">
+                    <div class="col-md-12 form-group">
+                        <label class="form-label" asp-for="Eposta">E-Posta</label>
+                        <input type="email" asp-for="Eposta" class="form-control">
+                    </div>
+                </div>
+            <!-- Password input -->
+                <div class="row">
+                    <div class="col-md-12 form-group">
+                        <label class="form-label" asp-for="Parola">Parola</label>
+                        <input type="password" asp-for="Parola" class="form-control">
+                    </div>
+                </div>
+
+                @if (ViewBag.mesaj != null)
+                {
+                    <br />
+                    <label> @ViewBag.Mesaj</label>
+                }
+                <!-- Submit button -->
+                <button type="submit" class="btn btn-primary btn-block mb-4">Giriş Yap</button>
+        </form>
+            
+
+              
+        </div>
+    </body>
+</html>

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
 using System;
+using System.Diagnostics;
 
 namespace EnvanterUygulaması.Controllers
 {
@@ -225,17 +226,23 @@ namespace EnvanterUygulaması.Controllers
         public async Task<IActionResult> DonanimMarkaListe()
         {
             DonanimPanelVM donanimPanelVM = new DonanimPanelVM();
-            var ls = await _donanimMarkaTurRepository.TumunuGetirInclude();
-            List<Liste> liste= ls.Select(x => new Liste()
-            {
-                id = x.donanimMarkalari.id,
-                Adi = x.donanimMarkalari.Adi,
-                TurId=x.donanimTurleri.id,
-                TurAdi=x.donanimTurleri.Adi
+            List<DonanimMarkalari> markaListe = await _donanimMarkaRepository.TumunuGetirInclude();
+          // var ls = await _donanimMarkaTurRepository.TumunuGetirInclude();
+            //List<Liste> markaListe= ls.Select(x => new Liste()
+            //{
+            //    id = x.donanimMarkalari.id,
+            //    Adi = x.donanimMarkalari.Adi,
+            //    TurAdlari=string.Join(", ", x.donanimTurleri.Adi)
 
+            //}).ToList();
+
+            donanimPanelVM.MarkaList= markaListe.Select(x=>new Liste 
+            { 
+                id=x.id,
+                Adi=x.Adi,
+                TurAdlari=string.Join(", ",x.donanimMarkaTurleri.Select(dm=>dm.donanimTurleri.Adi).ToArray()),
+               TurIdler=string.Join(",", x.donanimMarkaTurleri.Select(dm => dm.donanimTurleri.id).ToArray())
             }).ToList();
-
-            donanimPanelVM.MarkaList=liste;
 
             var turler = await _donanimTurRepository.TumunuGetir();
             List<Liste> turList= turler.Select(x => new Liste()
@@ -255,23 +262,55 @@ namespace EnvanterUygulaması.Controllers
             if (donanimPanelVM.id == 0)
             {   
                 markaEntity = new DonanimMarkalari { Adi = donanimPanelVM.Adi, Durumu = "Aktif" };
-                donanimMarkaTurleri = new DonanimMarkaTurleri() { TurId= donanimPanelVM.TurId.Value,donanimMarkalari=markaEntity};
-                var sonuc = await _donanimMarkaTurRepository.Ekle(donanimMarkaTurleri);
-                var vm =await _donanimMarkaTurRepository.GetirInclude(markaId: sonuc.MarkaId, turId: sonuc.TurId);
+                var markaEkleSonuc = await _donanimMarkaRepository.Ekle(markaEntity);
+                List<DonanimMarkaTurleri> turList = new List<DonanimMarkaTurleri>();
+                foreach (var turId in donanimPanelVM.TurIdler_chk)
+                {
+                    var tur= new DonanimMarkaTurleri() { TurId = turId, MarkaId=markaEkleSonuc.id };
+                    turList.Add(tur);
+                }
+                
+                
+                await _donanimMarkaTurRepository.TopluEkle(turList);
+                var marka_turList =await _donanimMarkaTurRepository.GetirInclude(markaEkleSonuc.id);
 
-                return Json(new DonanimPanelVM { Adi=vm.donanimMarkalari.Adi,id=vm.MarkaId,TurAdi=vm.donanimTurleri.Adi});
+                return Json(new DonanimPanelVM {
+                    Adi= donanimPanelVM.Adi,
+                    id= markaEkleSonuc.id,
+                    TurAdlari=string.Join(", ", marka_turList.Select(aratbl=>aratbl.donanimTurleri.Adi).ToArray()),
+                    TurIdler = string.Join(", ", marka_turList.Select(aratbl => aratbl.donanimTurleri.id).ToArray())
+                });
             }
             else
-            {
+            {//transaction oluştur
+
                 markaEntity = await _donanimMarkaRepository.Getir(donanimPanelVM.id);
                 if (markaEntity == null)
                     return null;
                 markaEntity.Durumu = "Aktif";
                 markaEntity.Adi = donanimPanelVM.Adi;
+                await _donanimMarkaRepository.Guncelle(markaEntity);
 
-                //donanimMarkaTurleri= await _donanimMarkaTurRepository.GetirInclude(markaId: )
-                //await _donanimMarkaRepository.Guncelle(markaEntity);
-                return Json(markaEntity);
+                var mevcutMarka_turList = await _donanimMarkaTurRepository.GetirInclude(markaEntity.id);
+                _donanimMarkaTurRepository.TopluSil(mevcutMarka_turList);
+
+                List<DonanimMarkaTurleri> turList = new List<DonanimMarkaTurleri>();
+                foreach (var turId in donanimPanelVM.TurIdler_chk)
+                {
+                    var tur = new DonanimMarkaTurleri() { TurId = turId, MarkaId = markaEntity.id };
+                    turList.Add(tur);
+                }
+                await _donanimMarkaTurRepository.TopluEkle(turList);
+                var marka_turList = await _donanimMarkaTurRepository.GetirInclude(markaEntity.id);
+
+
+                return Json(new DonanimPanelVM
+                {
+                    Adi = donanimPanelVM.Adi,
+                    id = markaEntity.id,
+                    TurAdlari = string.Join(", ", marka_turList.Select(aratbl => aratbl.donanimTurleri.Adi).ToArray()),
+                    TurIdler = string.Join(", ", marka_turList.Select(aratbl => aratbl.donanimTurleri.id).ToArray())
+                });
             }
         }
 

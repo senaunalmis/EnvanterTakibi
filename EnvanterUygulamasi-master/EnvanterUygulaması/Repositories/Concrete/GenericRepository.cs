@@ -41,13 +41,14 @@ namespace EnvanterUygulaması.Repositories.Concrete
         {
             return await _entity.FindAsync(id);
         }
-        Task IGenericRepository<TEntity>.Sil(int id)
+        public async Task Sil(int id)
         {
             throw new NotImplementedException();
         }
-        Task IGenericRepository<TEntity>.TopluEkle(List<TEntity> entities)
+        public async Task TopluEkle(List<TEntity> entities)
         {
-            throw new NotImplementedException();
+            _context.AddRange(entities);
+            await _context.SaveChangesAsync();
         }
 
 

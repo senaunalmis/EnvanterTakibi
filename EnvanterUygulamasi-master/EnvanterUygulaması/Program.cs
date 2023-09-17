@@ -1,6 +1,7 @@
 using EnvanterUygulamasý.Context;
 using EnvanterUygulamasý.Repositories.Abstract;
 using EnvanterUygulamasý.Repositories.Concrete;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +21,10 @@ builder.Services.AddTransient<IListRepository, ListRepository>();
 builder.Services.AddTransient<IDonanimAltTurRepository, DonanimAltTurRepository>();
 builder.Services.AddTransient<IDonanimUstModelRepository, DonanimUstModelRepository>();
 builder.Services.AddTransient<IDonanimAltModelRepository, DonanimAltModelRepository>();
+builder.Services.AddTransient<IKullanicilarRepository, KullanicilarRepository>();
+builder.Services.AddTransient<IKullaniciRolleriRepository, KullaniciRolleriRepository>();
+builder.Services.AddTransient<IRollerRepository, RollerRepository>();
+
 
 
 
@@ -33,6 +38,13 @@ builder.Services.AddDbContext<DataContext>(options =>
 // Diðer hizmetleri ekle
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(option =>
+    {
+        option.LoginPath = "/Security/Login";
+        option.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+    }
+    );
 
 var app = builder.Build();
 
@@ -44,10 +56,11 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=User}/{action=Login}/{id?}");
+    pattern: "{controller=Security}/{action=Login}/{id?}");
 
 app.Run();

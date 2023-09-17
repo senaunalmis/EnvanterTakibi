@@ -25,10 +25,14 @@ namespace EnvanterUygulaması.Repositories.Concrete
 
             return markaTurList;
         }
-        public async Task<DonanimMarkaTurleri?> GetirInclude(int markaId,int turId)
+        public async Task<List<DonanimMarkaTurleri>> GetirInclude(int markaId)
         {
-            return await _context.DonanimMarkaTurleri.Include(x=>x.donanimMarkalari).Include(x=>x.donanimTurleri).FirstOrDefaultAsync(x=>x.MarkaId==markaId&&x.TurId==turId);
+            return await _context.DonanimMarkaTurleri.Include(x=>x.donanimMarkalari).Include(x=>x.donanimTurleri).Where(x=>x.MarkaId==markaId).ToListAsync();
         }
 
+        public  void TopluSil(List<DonanimMarkaTurleri> entities)
+        {
+             _context.DonanimMarkaTurleri.RemoveRange(entities);
+        }
     }
 }

@@ -19,7 +19,7 @@
         {
             <div class="col-auto">
                 <label>@Model.TurList[i].Adi</label>
-                <input name="TurIdler_chk" type="checkbox" value="@Model.TurList[i].TurId" />
+                <input name="turIdler_chk" class="turId_chk" type="checkbox" value="@Model.TurList[i].id" />
             </div>
         }
     </div>
@@ -35,7 +35,7 @@
             <tr>
                 <th>İşlem</th>
                 <th>Marka Adı</th>
-                <th>Türü</th>
+                <th>Türleri</th>
             </tr>
         </thead>
         <tbody>
@@ -43,10 +43,10 @@
             {
                 <tr>
                     <td>
-                        <a class="btn btn-primary markaGuncelle" data-id="@marka.id" data-ad="@marka.Adi">Güncelle</a>
+                        <a class="btn btn-primary markaGuncelle" data-id="@marka.id" data-ad="@marka.Adi" data-idler="" data-turidler="@marka.TurIdler">Güncelle</a>
                     </td>
                     <td>@marka.Adi</td>
-                    <td>@marka.TurAdi</td>
+                    <td>@marka.TurAdlari</td>
                 </tr>
             }
         </tbody>
@@ -60,27 +60,32 @@
                 url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/tr.json',
             }
         });
-       
+
         $(function () {
             // var kullanici_tablo = $('#kullaniciTablo').DataTable();
             //const donanimMarkaTablo = new DataTable('#donanimMarkaTablo');
 
             $("#yeniMarka_btn").click(function () {
                 var ad = $("#ad").val();
-                console.log(ad);
-                var turId = $("#turDD").val();
-                var turAdi = $("#turDD option:selected").text();
+
+                // var turId = $("#turDD").val();
+                // var turAdi = $("#turDD option:selected").text();
 
                 if (ad == null || ad == "") {
                     $("#mesaj").empty();
                     $("#mesaj").append("Marka adı giriniz");
                 }
-                else if (turId == null || turId == "") {
-                    $("#mesaj").empty();
-                    $("#mesaj").append("Donanım Türü seçiniz");
+                // else if (turId == null || turId == "") {
+                //     $("#mesaj").empty();
+                //     $("#mesaj").append("Donanım Türü seçiniz");
 
-                }
+                // }
                 else {
+                    var turIdler = [];
+                    $(".turId_chk").each(function () {
+                        if ($(this).is(':checked'))
+                            turIdler.push($(this).val());
+                    });
                     var url = "/Donanim/DonanimMarkaEkleDuzenle";
                     $.ajax({
                         url: url,
@@ -88,14 +93,12 @@
                         data: {
                             id: 0,
                             adi: ad,
-                            turId:turId,
-                            turAdi: turAdi
+                            TurIdler_chk: turIdler
                         },
-                        success: function (data) {
-                            console.log(data.adi)
-                            if (data != null) {
-                                var guncelleBtn = "<a class='btn btn-primary markaGuncelle' data-id='" + data.id + "' data-ad='" + data.adi + "' >Güncelle</a>";
-                                donanimMarkaTablo.row.add([guncelleBtn, data.adi, data.turAdi]).draw(); // Tabloyu güncelle
+                        success: function (resp) {
+                            if (resp != null) {
+                                var guncelleBtn = "<a class='btn btn-primary markaGuncelle' data-id='" + resp.id + "' data-turidler='"+resp.turIdler+"' >Güncelle</a>";
+                                donanimMarkaTablo.row.add([guncelleBtn, resp.adi, resp.turAdlari]).draw(); // Tabloyu güncelle
                                 alert("Kayıt eklendi");
                                 $("#mesaj").empty();
                             }
@@ -109,10 +112,21 @@
             $("#donanimMarkaTablo").on("click", ".markaGuncelle", function () {
                 var markaId = $(this).data("id");
                 var markaAd = $(this).data("ad");
+                var turIdlerStr = $(this).data("turidler").toString();
+               
+                var turIdler = turIdlerStr.split(",");
+                $(".turId_chk").each(function () {
+                    $(this).attr('checked', false);
+                    var turId = $(this).val();
+                    if (turIdler.includes(turId)) {
+                        $(this).attr('checked', true);
+                    }
+                });
                 var indeks = donanimMarkaTablo.row($(this).parents('tr')).index();
                 $("#guncelleSatirIndeks").val(indeks);
                 $("#id").val(markaId);
                 $("#ad").val(markaAd);
+
                 $("#yeniMarka_btn").hide();
                 $("#vazgecMarka_btn").show();
                 $("#kaydetMarka_btn").show();
@@ -131,11 +145,16 @@
                     $("#mesaj").empty();
                     $("#mesaj").append("Marka adı giriniz");
                 }
-                else if (turId == null || turId == "") {
-                    $("#mesaj").empty();
-                    $("#mesaj").append("Donanım Türü seçiniz");
-                }
+                // else if (turId == null || turId == "") {
+                //     $("#mesaj").empty();
+                //     $("#mesaj").append("Donanım Türü seçiniz");
+                // }
                 else {
+                    var turIdler = [];
+                    $(".turId_chk").each(function () {
+                        if ($(this).is(':checked'))
+                            turIdler.push($(this).val());
+                    });
                     var url = "/Donanim/DonanimMarkaEkleDuzenle";
                     $.ajax({
                         url: url,
@@ -143,14 +162,12 @@
                         data: {
                             id: markaId,
                             adi: markaAd,
-                            turId: turId
+                            TurIdler_chk: turIdler
                         },
-                        success: function (data) {
-
-                            console.log(data.adi)
-                            if (data != null) {
-                                var guncelleBtn = "<a class='btn btn-primary markaGuncelle' data-id='" + data.id + "' data-ad='" + data.adi + "' >Güncelle</a>";
-                                var yeniData = [guncelleBtn, data.adi]
+                        success: function (resp) {
+                            if (resp != null) {
+                                var guncelleBtn = "<a class='btn btn-primary markaGuncelle' data-id='" + resp.id + "' data-ad='" + resp.adi + "' data-turidler='"+resp.turIdler+"' >Güncelle</a>";
+                                var yeniData = [guncelleBtn, resp.adi, resp.turAdlari]
                                 var indeks = $("#guncelleSatirIndeks").val();
 
                                 donanimMarkaTablo.row(indeks).data(yeniData).draw();

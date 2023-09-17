@@ -15,5 +15,14 @@ namespace EnvanterUygulaması.Repositories.Concrete
             _dataContext = context;
             _donanimMarkalariDbSet = context.DonanimMarkalari;
         }
+        public async Task<List<DonanimMarkalari>> TumunuGetirInclude()
+        {
+            var markaList = await _dataContext.DonanimMarkalari
+                .Include(d => d.donanimMarkaTurleri)
+                .ThenInclude(d => d.donanimTurleri)
+                .ToListAsync();
+
+            return markaList;
+        }
     }
 }

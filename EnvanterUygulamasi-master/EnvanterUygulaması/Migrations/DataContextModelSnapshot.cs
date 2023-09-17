@@ -335,6 +335,9 @@ namespace EnvanterUygulaması.Migrations
                     b.Property<int>("RolID")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("EklemeTarihi")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("KullaniciID", "RolID");
 
                     b.HasIndex("RolID");
@@ -354,7 +357,14 @@ namespace EnvanterUygulaması.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Sifresi")
+                    b.Property<DateTime>("EklemeTarihi")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Eposta")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Soyad")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -370,6 +380,10 @@ namespace EnvanterUygulaması.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+
+                    b.Property<string>("Ad")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Yetkisi")
                         .IsRequired()
