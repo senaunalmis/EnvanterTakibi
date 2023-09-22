@@ -1,0 +1,40 @@
+﻿@model EnvanterUygulaması.ViewModels.KullaniciEkleDuzenleVM;
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<br />
+<form class="row g-3" asp-controller="KullaniciYonetim" asp-action="EkleDuzenle" method="post">
+    <input asp-for="Id" type="hidden" />
+    <div class="col-auto">
+        <label asp-for="Eposta">Eposta</label>
+        <input type="text" class="form-control" asp-for="Eposta" />
+    </div>
+    <div class="col-auto">
+        <label asp-for="Ad">Ad</label>
+        <input type="text" class="form-control" asp-for="Ad" />
+    </div>
+    <div class="col-auto">
+        <label asp-for="Soyad">Soyad</label>
+        <input type="text" class="form-control" asp-for="Soyad" />
+    </div>
+    
+    @for(int i=0; i < Model.TumRoller.Count; i++)
+    {
+        <div class="col-auto">
+            <label>@Model.TumRoller[i].Ad</label>
+            <input name="RolIdler_chk" type="checkbox" value="@Model.TumRoller[i].id" @(Model.RolIdler_chk.Contains(Model.TumRoller[i].id)? "Checked":"")>
+        </div>
+
+        @if (ViewBag.Mesaj != null)
+        {
+            <br />
+            <label>@ViewBag.Mesaj</label>
+        }
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary mb-3" mb-3> Kaydet</button>
+        </div>
+    }
+
+</form>

@@ -20,6 +20,7 @@
 
   <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
   <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js "></script>
+    <script src="https://cdn.datatables.net/plug-ins/1.13.6/sorting/turkish-string.js"></script>
 
 </head>
 <body>
@@ -39,7 +40,7 @@
             <li><a class="dropdown-item" href="#">Profil</a></li>
             <li><a class="dropdown-item" href="#">Ayarlar</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Çıkış Yap</a></li>
+            <li><a class="dropdown-item" href="/Security/Logout">Çıkış Yap</a></li>
           </ul>
         </li>
       </ul>
@@ -172,11 +173,9 @@
             <div class="collapse pl-3" id="kullaniciMenu">
               <ul class="nav flex-column altbaslik">
                 <li class="nav-item">
-                  <a class="nav-link baslik" href="#">Kullanıcı Ekle</a>
+                  <a class="nav-link baslik" href="/KullaniciYonetim/Index"> Kullanıcı Yönetimi </a>
                 </li>
-                <li class="nav-item">
-                  <a class="nav-link baslik" href="#">Kullanıcı Kaldır</a>
-                </li>
+               
               </ul>
             </div>
           </li>

@@ -3,10 +3,13 @@
     "",
     "\\EnvanterUygulaması",
     "\\EnvanterUygulaması\\Controllers",
+    "\\EnvanterUygulaması\\Models",
     "\\EnvanterUygulaması\\ViewModels",
     "\\EnvanterUygulaması\\Views",
-    "\\EnvanterUygulaması\\Views\\Donanim"
+    "\\EnvanterUygulaması\\Views\\Donanim",
+    "\\EnvanterUygulaması\\Views\\KullaniciYonetim",
+    "\\EnvanterUygulaması\\Views\\Yazilim"
   ],
-  "SelectedNode": "\\EnvanterUygulaması\\Views\\Donanim\\DonanimMarkaListe.cshtml",
+  "SelectedNode": "\\EnvanterUygulaması\\Views\\Yazilim\\EkledigimYazilimlar.cshtml",
   "PreviewInSolutionExplorer": false
 }

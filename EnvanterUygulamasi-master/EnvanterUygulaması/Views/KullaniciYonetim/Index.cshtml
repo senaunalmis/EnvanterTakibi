@@ -1,0 +1,30 @@
+﻿@using EnvanterUygulaması.ViewModels;
+@model List<KullaniciListeVM>
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<br />
+<a class="btn btn-success" href="/KullaniciYonetim/EkleDuzenle/0">Yeni Kullanici Ekle</a>
+
+<div class="row">
+    <table class="table table-striped" id="kullaniciTablo">
+        <thead>
+            <tr><th>İşlem</th><th>Kullanıcı Adı</th><th>Ad</th><th>Soyad</th><th>Roller</th></tr>
+        </thead>
+        <tbody>
+            @foreach (var kullanici in Model)
+            {
+                <tr>
+                    <td><a class="btn btn-primary" href="/kullaniciyonetim/ekleduzenle/@kullanici.Id">Güncelle</a></td>
+                    <td>@kullanici.Eposta</td>
+                    <td>@kullanici.Ad</td>
+                    <td>@kullanici.Soyad</td>
+                    <td>@kullanici.Roller</td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

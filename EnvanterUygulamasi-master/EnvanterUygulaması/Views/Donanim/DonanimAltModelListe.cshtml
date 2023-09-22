@@ -38,7 +38,7 @@
             {
                 <tr>
                     <td>
-                        <a class="btn btn-primary  ustModelGuncelle" data-id="@altModel.id" data-ad="@altModel.Adi">Güncelle</a>
+                        <a class="btn btn-primary  altModelGuncelle" data-id="@altModel.id" data-ad="@altModel.Adi">Güncelle</a>
                     </td>
                     <td>@altModel.Adi</td>
                     <td>@altModel.UstModelAdi</td>
@@ -62,14 +62,14 @@
 
             $("#yeniAltModel_btn").click(function () {
                 var ad = $("#ad").val();
-                var ustModel = $("#ustModelDD").val();
-                var ustModel = $("#ustModelDD option:selected").text();
+                var ustModelid = $("#ustModelDD").val();
+                var ustModelAdi = $("#ustModelDD option:selected").text();
 
                 if (ad == null || ad == "") {
                     $("#mesaj").empty();
                     $("#mesaj").append("Alt Model adı giriniz");
                 }
-                else if (ustModel == null || ustModel == "") {
+                else if (ustModelid == null || ustModelid == "") {
                     $("#mesaj").empty();
                     $("#mesaj").append("Üst Model seçiniz");
 
@@ -82,12 +82,12 @@
                         data: {
                             id: 0,
                             adi: ad,
-                            ustModelId: ustModelId,
+                            ustModelid: ustModelid,
                         },
                         success: function (data) {
                             if (data != null) {
-                                var guncelleBtn = "<a class='btn btn-primary altModelGuncelle' data-id='" + data.id + "' data-ad='" + data.adi + "' data-ustModelId='" + data.adi + "' >Güncelle</a>";
-                                donanimAltModelTablo.row.add([guncelleBtn, data.adi, ustModelAdi]).draw(); // Tabloyu güncelle
+                                var guncelleBtn = "<a class='btn btn-primary altModelGuncelle' data-id='" + data.id + "' data-ad='" + data.adi + "' >Güncelle</a>";
+                                donanimAltModelTablo.row.add([guncelleBtn, data.adi, ustModelid]).draw(); // Tabloyu güncelle
                                 alert("Kayıt eklendi");
                                 $("#mesaj").empty();
                             }
@@ -99,12 +99,13 @@
             //dinamik oluşabilen dom elemanlarına .click erişemeyebilir
             //bu yüzden .on ile sabit dom elemanı üzerinden erişilir
             $("#donanimAltModelTablo").on("click", ".altModelGuncelle", function () {
+                var altModelId = $(this).data("id");
+                var altModelAd = $(this).data("ad");
                 var ustModelId = $(this).data("id");
-                var ustModelAdi = $(this).data("ad");
                 var indeks = donanimAltModelTablo.row($(this).parents('tr')).index();
                 $("#guncelleSatirIndeks").val(indeks);
-                $("#id").val(turId);
-                $("#ad").val(turAdi);
+                $("#id").val(altModelId);
+                $("#ad").val(altModelAd);
                 $("#yeniAltModel_btn").hide();
                 $("#vazgecAltModel_btn").show();
                 $("#kaydetAltModel_btn").show();
@@ -112,18 +113,19 @@
             });
 
             $("#vazgecAltModel_btn").click(function () {
-                AlturFormResetle();
+                AlModelFormResetle();
             });
 
             $("#kaydetAltModel_btn").click(function () {
                 var AltModelId = $("#id").val();
                 var AltModelAd = $("#ad").val();
-
+                var ustModelid = $("#ustModelDD").val();
                 if (AltModelAd == null || AltModelAd == "") {
                     $("#mesaj").empty();
                     $("#mesaj").append("Alt Model giriniz");
                 }
-                else if (ustModelId == null || ustModelId == "") {
+                else if (ustModelid == null || ustModelid == "") {
+                    console.log(ustModelid);
                     $("#mesaj").empty();
                     $("#mesaj").append("Üst Model seçiniz");
                 }
@@ -135,14 +137,15 @@
                         data: {
                             id: AltModelId,
                             adi: AltModelAd,
-                            ustModelId: ustModelId
+                            ustModelId: ustModelid
                         },
-                        success: function (data) {
+                        success: function (resp) {
 
-                            console.log(data.adi)
-                            if (data != null) {
-                                var guncelleBtn = "<a class='btn btn-primary altModelGuncelle' data-id='" + data.id + "' data-ad='" + data.adi + "' >Güncelle</a>";
-                                var yeniData = [guncelleBtn, data.adi]
+                            
+                            if (resp != null) {
+
+                                var guncelleBtn = "<a class='btn btn-primary altModelGuncelle' data-id='" + resp.id + "' data-ad='" + resp.adi + "'data-ustModelId='" + resp.ustModelid + "' >Güncelle</a>";
+                                var yeniData = [guncelleBtn, resp.adi, resp.ustModelid]
                                 var indeks = $("#guncelleSatirIndeks").val();
 
                                 donanimAltModelTablo.row(indeks).data(yeniData).draw();

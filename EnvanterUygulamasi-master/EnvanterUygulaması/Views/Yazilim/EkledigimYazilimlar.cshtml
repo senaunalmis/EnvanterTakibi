@@ -2,7 +2,7 @@
 
 <div class="mt-5 align-items-center">
     <h3 class="text-center">Eklediğim Yazılımlar</h3>
-    <a href="#" class="link-underline-primary float-end">Filtrele</a>
+   @*  <a href="#" class="link-underline-primary float-end">Filtrele</a> *@
 </div>
 
 <button id="redirectButton" class="btn btn-primary" href="/Yazilim/YazilimEkle@0">Yazılım Ekle</button>
@@ -59,13 +59,49 @@
             }
         </tbody>
     </table>
-      </div>
+</div>
 
 <script>
+    // require('datatables.net-plugins/sorting/turkish-string.js');
     $(document).ready(function () {
+
+        jQuery.fn.DataTable.ext.type.search.string = function (sVal) {
+            var letters = { "İ": "i", "I": "ı", "i": "İ", "ı": "I" };
+            return sVal.replace(/(([İI]))/g, function (letter) { return letters[letter]; });
+        };
+
         $('#yazilimTablo').DataTable({
             language: {
                 url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/tr.json',
+            },
+           // searching: false, // Genel arama kutusunu devre dışı bırak
+           // bFilter: false, // Genel arama kutusunu devre dışı bırak
+            columns: [
+                null, // İşlem sütunu
+                null, // Markası sütunu
+                null, // Adı sütunu
+                null, // Versiyonu sütunu
+                null, // Türü sütunu
+                null, // Cihaz Sayısı sütunu
+                null, // Alım Tarihi sütunu
+                null, // Destek Süresi sütunu
+                null, // Açıklama sütunu
+                null, // Ekleyen Kullanıcı sütunu
+                null  // Bölge sütunu
+            ],
+            initComplete: function () {
+                this.api().columns().every(function () {
+                    var column = this;
+                    var headerText = $(column.header()).text().trim();
+                    var input = document.createElement("input");
+                    input.setAttribute("type", "text");
+                    input.setAttribute("placeholder", headerText );
+
+                    $(input).appendTo($(column.header()).empty())
+                        .on('keyup change', function () {
+                            column.search($(this).val()).draw();
+                        });
+                });
             }
         });
     });

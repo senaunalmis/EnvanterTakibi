@@ -414,7 +414,7 @@ namespace EnvanterUygulaması.Controllers
                 ustModelEntity = await _donanimUstModelRepository.Getir(donanimPanelVM.id);
                 if (ustModelEntity == null)
                     return null;
-
+                ustModelEntity.Durumu = "Aktif";
                 ustModelEntity.Adi = donanimPanelVM.Adi;
 
                 //donanimMarkaTurleri= await _donanimMarkaTurRepository.GetirInclude(markaId: )
